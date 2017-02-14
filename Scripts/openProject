@@ -1,0 +1,2 @@
+#!/bin/bash
+emacs --chdir $PWD/$1 $PWD/$1 &

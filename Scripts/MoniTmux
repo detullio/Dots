@@ -1,0 +1,12 @@
+#!/bin/bash
+
+sessionName=monitor
+
+tmux new-session -s "$sessionName" -n "$sessionName"  -x - -y - -d 'docker stats'
+
+tmux splitw -v -p 90 -t "$sessionName:0.0" 'htop'
+tmux splitw -v -p 90 -t "$sessionName:0.1" 'bmon'
+
+tmux send-keys -t "$sessionName:0.2" "id"
+
+tmux -2 attach-session -t "$sessionName"
