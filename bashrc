@@ -2,118 +2,15 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-
-# don't put duplicate lines in the history. See bash(1) for more options
-# don't overwrite GNU Midnight Commander's setting of `ignorespace'.
-export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
-# ... or force ignoredups and ignorespace
-export HISTCONTROL=ignoreboth
-
-export HISTFILESIZE=4056
-export HISTSIZE=4056
-export HISTIGNORE="&:l:[bf]g:exit"
-export HISTTIMEFORMAT='%F %T '
-
-export BASH_ENV=".nonInteractive"
-
-
-if [ -f ~/.bash_aliases ]; then
-    xmodmap ~/.xmodmap-`uname -n`
-fi
-
-
-#!/bin/bash
-#----------------------------------------------------------------------
-#       POWER USER PROMPT "pprom2"
-#----------------------------------------------------------------------
-#
-#   copyright 2007 Giles Orr
-#   Placed under the Gnu Public License v.3
-#
-
-function prompt_command
-{
-#      This is used to calculate the differential in load values
-#      provided by the "uptime" command.  "uptime" gives load 
-#      averages at 1, 5, and 15 minute marks.  The HERE document
-#      is needed because "read" won't take data from subprocesses
-#      in a pipe.  "fifteen" is unused but available.
-#
-local one
-local five
-read one five fifteen << HERE
-  $(uptime | sed -e "s/.*load average: \(.*\...\), \(.*\...\), \(.*\...\)/\1 \2 \3/")
-HERE
-loaddiff=$(echo -e "scale = scale ($one) \nx=$one - $five\n {print $one} \n if (x>0) {print \"^\", x} else {print \"v\", -x}\nquit \n" | bc)
-
-#   Count visible files:
-let files=$(ls -l | grep "^-" | wc -l | tr -d " ")
-let hiddenfiles=$(ls -l -d .* | grep "^-" | wc -l | tr -d " ")
-let executables=$(ls -l | grep ^-..x | wc -l | tr -d " ")
-let directories=$(ls -l | grep "^d" | wc -l | tr -d " ")
-let hiddendirectories=$(ls -l -d .* | grep "^d" | wc -l | tr -d " ")-2
-let linktemp=$(ls -l | grep "^l" | wc -l | tr -d " ")
-if [ "$linktemp" -eq "0" ]
-then
-    links=""
-else
-    links=" ${linktemp}l"
-fi
-unset linktemp
-let devicetemp=$(ls -l | grep "^[bc]" | wc -l | tr -d " ")
-if [ "$devicetemp" -eq "0" ]
-then
-    devices=""
-else
-    devices=" ${devicetemp}bc"
-fi
-unset devicetemp
-
-}
-
-PROMPT_COMMAND=prompt_command
-
-function pprom2 {
-
-local BLUE="\[\033[0;34m\]"
-local LIGHT_GRAY="\[\033[0;37m\]"
-local LIGHT_GREEN="\[\033[1;32m\]"
-local LIGHT_BLUE="\[\033[1;34m\]"
-local LIGHT_CYAN="\[\033[1;36m\]"
-local YELLOW="\[\033[1;33m\]"
-local WHITE="\[\033[1;37m\]"
-local RED="\[\033[0;31m\]"
-local BLACK="\[\033[0m\]"
-
-case $TERM in
-    xterm*|rxvt*)
-        TITLEBAR='\[\033]0;\u@\h:\w\007\]'
-        ;;
-    *)
-        TITLEBAR=""
-        ;;
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
 esac
 
-PS1="$TITLEBAR\
-$LIGHT_GRAY[\
-$LIGHT_GRAY\${files}//.\${hiddenfiles}//\
-$LIGHT_GREEN\${executables} \
-$LIGHT_GRAY\$(lsbytesum.sh) \
-$LIGHT_GRAY][\w$LIGHT_GRAY]\
-\n\
-$LIGHT_GRAY[$BLACK\D{%F %T}$LIGHT_GRAY]\
-$LIGHT_GRAY[$YELLOW\u@\h$LIGHT_GRAY]\
-$WHITE\\n->\
-\
-$BLACK "
-PS2='continue---> '
-PS4='+ '
-}
-
-pprom2
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -126,30 +23,54 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-alias l="ls -lFhX --color"
-
-alias whis="history -w"
-alias rhis="history -r"
-alias ghis="history | grep "
-
-
-alias lemacsClient='emacsclient -t'
-
-alias emacsClient='emacsclient -c'
-
-export PATH=$PATH:/usr/brlcad/bin/:~/Scripts
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
 fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -163,10 +84,17 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 # some more ls aliases
-alias ll='ls -l'
-#alias la='ls -A'
-alias l='ll -FhX'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -180,8 +108,12 @@ fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
+  fi
 fi
 
-setxkbmap -option ctrl:nocaps
+xmodmap .Xmodmap
