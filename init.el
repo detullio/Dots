@@ -3,6 +3,11 @@
 (setq debug-on-error t)
 (setq stack-trace-on-error)
 
+(require 'package)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
 ; Do without annoying startup msg.
 (setq inhibit-startup-message t)
 
@@ -42,7 +47,6 @@
 
 (defconst font-lock-maximum-decoration t)
 (setq visible-bell 1)
-
 ;; C-Mode stuff
 (setq-default c-default-style (quote ((c-mode . "stroustrup") (c++-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
 (setq c-echo-syntactic-information-p t)
@@ -195,7 +199,6 @@ Select one of the following:
      (global-set-key [(control x)(control r)] 'sudo-reopen-file)))
 
 (require 'tramp)
-
 ;;debugging
 (setq gdb-many-windows nil)
 (setq gdb-same-frame nil)
