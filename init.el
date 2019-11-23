@@ -1,55 +1,29 @@
+
 ;;Turn on debug for load of init.el
 (setq debug-on-error t)
 (setq stack-trace-on-error)
 
-;; (set-face-attribute `latex-mode-default nil :height 250 :font "-apple-Adobe_Garamond_Pro-medium-normal-normal-*-*-*-*-*-p-0-iso10646-1")
-;; (set-face-attribute `text-mode-default nil :height 250 :font "-apple-Adobe_Garamond_Pro-medium-normal-normal-*-*-*-*-*-p-0-iso10646-1")
-;; (set-face-attribute `org-mode-default nil :height 250 :font "-apple-Adobe_Garamond_Pro-medium-normal-normal-*-*-*-*-*-p-0-iso10646-1")
-;; (set-face-attribute `mode-line nil :height 200 :font "-apple-Gill_Sans-medium-normal-normal-*-*-*-*-*-p-0-iso10646-1")
-;; (set-face-attribute 'default nil :height 250 :font "-apple-Letter_Gothic_Std-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")
+; Do without annoying startup msg.
+(setq inhibit-startup-message t)
+
+;; use y or n instead of yes or no
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; don't show the silly stuff at the top, I know I'm using emacs
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode -1)
+
+(require 'package)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
 (setq cursor-type 'box)
 
+(transient-mark-mode 0)
+
 (setq cursor-type '"%R%U %s %a %o")
-
-(add-to-list 'load-path "~/.emacs.d/elisp")
-(add-to-list 'load-path "~/.emacs.d/elisp/popup-el")
-(add-to-list 'load-path "~/.emacs.d/elisp/auto-complete")
-(add-to-list 'load-path "~/.emacs.d/elisp/lua-mode")
-
-(require `pgg)
-
-;; Autocomplete stuff
-;;(require 'auto-complete-config.el)
-;;(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-
-;; (require 'yasnippet-bundle)
-;; (require 'auto-complete-clang)
-
-;; (require 'auto-complete+)
-;; (require 'auto-complete-extension)
-
-;; (defun my-ac-config ()
-;;   (setq ac-clang-flags (split-string "-I/usr/include/c++/4.5 -I/usr/include/boost"))
-;;   (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
-;;   (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
-;;   (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-;;   (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
-;;   (add-hook 'css-mode-hook 'ac-css-mode-setup)
-;;   (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-;;   (global-auto-complete-mode t))
-
-;; (defun kenny-ac-cc-mode-setup ()
-;;   (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
- 
-;; (add-hook 'c-mode-common-hook 'kenny-ac-cc-mode-setup)
-
-;; (my-ac-config)
-
-;; (setq ac-auto-start t)
-;; (setq ac-quick-help-delay 0.5)
-;; (setq ac-delay 0.5)
-;; (define-key ac-completing-map [(control .)] 'ac-stop)
 
 ;;enable some old skool behavior
 (put 'scroll-left 'disabled nil)
@@ -63,15 +37,11 @@
 (setq org-agenda-files "~/.emacs.d/OrgAgendaFiles")
 
 (require 'org-table)
-;; (set-face-attribute `org-mode-default nil :height 250 :font "-apple-Arial-medium-normal-normal-*-*-*-*-*-p-0-iso10646-1")
-;; (set-face-attribute `org-table nil :height 250 :font "-apple-Letter_Gothic_Std-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")
 
-;;(quote ("~/Documents/OrgFiles/Projects/ProScuzNetwork.org" "~/Documents/OrgFiles/RandomResearch.org" "~/Documents/OrgFiles/todo.org")))
+(quote ("~/Documents/OrgFiles/Projects/ProScuzNetwork.org" "~/Documents/OrgFiles/RandomResearch.org" "~/Documents/OrgFiles/todo.org")))
 
 (defconst font-lock-maximum-decoration t)
 (setq visible-bell 1)
-
-(setq-default sr-speedbar-right-side nil)
 
 ;; C-Mode stuff
 (setq-default c-default-style (quote ((c-mode . "stroustrup") (c++-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
@@ -101,22 +71,7 @@
 ;; Stop at the end of the file, not just add lines
 (setq next-line-add-newlines nil)
 
-;; use y or n instead of yes or no
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; don't show the silly stuff at the top, I know I'm using emacs
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode -1)
-
-; Do without annoying startup msg.
-(setq inhibit-startup-message t)
-
-;;dired plus stuff
-(require 'dired+)
-(require 'dired-sort-menu+)
-
-(setq dired-listing-switches "-hlXAZ")
+(setq dired-listing-switches "-hlX")
 (setq-default dired-omit-files-p t) ; this is buffer-local variable
 (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..?")
 
@@ -125,69 +80,47 @@
                                                   w c-mode w c++-mode w java-mode w jde-mode w html-mode
                                                   w html-helper-mode w cperl-mode w perl-mode w mail-mode
                                                   t message-mode t cmail-mail-mode t tcl-mode 79 ruby-mode 79)))
-;;emacs midnight commander mode
-(require 'mc)
 
-;; Load CEDET.
-;; See cedet/common/cedet.info for configuration details.
-
-;;(load-file "~/.emacs.d/elisp/cedet-bzr/common/cedet.el")
-
-
-;; Enable EDE (Project Management) features
-(global-ede-mode 1)
-
-;; Enable EDE for a pre-existing C++ project
-;; (ede-cpp-root-project "NAME" :file "~/myproject/Makefile")
-
-;;(require 'ede-generic)
-;;(require `semantic-gcc)
-
-;; if you want to enable support for gnu global
-;;(require 'semanticdb-global)
-;; (semanticdb-enable-gnu-global-databases 'c-mode)
-;; (semanticdb-enable-gnu-global-databases 'c++-mode)
-;; (setq semantic-ectag-program 'ctags)
 
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
 
-;; enable ctags for some languages:
-;;  Unix Shell, Perl, Pascal, Tcl, Fortran, Asm
-;; (semantic-load-enable-primary-exuberent-ctags-support)
+;;enable ctags for some languages:
+;; Unix Shell, Perl, Pascal, Tcl, Fortran, Asm
+(semantic-load-enable-primary-exuberent-ctags-support)
 
-;; Enabling Semantic (code-parsing, smart completion) features
-;; Select one of the following:
+;;Enabling Semantic (code-parsing, smart completion) features
+Select one of the following:
 
-;; * This enables the database and idle reparse engines
-;; (semantic-load-enable-minimum-features)
+;;* This enables the database and idle reparse engines
+(semantic-load-enable-minimum-features)
 
-;; * This enables some tools useful for coding, such as summary mode
-;;   imenu support, and the semantic navigator
-;; (semantic-load-enable-code-helpers)
+;;* This enables some tools useful for coding, such as summary mode
+;;  imenu support, and the semantic navigator
+(semantic-load-enable-code-helpers)
 
-;; * This enables even more coding tools such as intellisense mode
-;;   decoration mode, and stickyfunc mode (plus regular code helpers)
-;; (semantic-load-enable-gaudy-code-helpers)
+;;* This enables even more coding tools such as intellisense mode
+;;  decoration mode, and stickyfunc mode (plus regular code helpers)
+(semantic-load-enable-gaudy-code-helpers)
 
-;; * This enables the use of Exuberent ctags if you have it installed.
-;;   If you use C++ templates or boost, you should NOT enable it.
-;; (semantic-load-enable-all-exuberent-ctags-support)
-;;   Or, use one of these two types of support.
-;;   Add support for new languges only via ctags.
-;; (semantic-load-enable-primary-exuberent-ctags-support)
-;;   Add support for using ctags as a backup parser.
-;; (semantic-load-enable-secondary-exuberent-ctags-support)
+;;* This enables the use of Exuberent ctags if you have it installed.
+;;  If you use C++ templates or boost, you should NOT enable it.
+(semantic-load-enable-all-exuberent-ctags-support)
+;;  Or, use one of these two types of support.
+;;  Add support for new languges only via ctags.
+(semantic-load-enable-primary-exuberent-ctags-support)
+;;  Add support for using ctags as a backup parser.
+(semantic-load-enable-secondary-exuberent-ctags-support)
 
-;; Enable SRecode (Template management) minor-mode.
-;; (global-srecode-minor-mode 1)
+;;Enable SRecode (Template management) minor-mode.
+(global-srecode-minor-mode 1)
 
 ;;Wrap compilation windows
-;; (defun my-compilation-mode-hook ()
-;;   (setq truncate-lines nil)
-;;   (setq truncate-partial-width-windows nil))
-;; (add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
+(defun my-compilation-mode-hook ()
+  (setq truncate-lines nil)
+  (setq truncate-partial-width-windows nil))
+(add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
 
 ;;other compilation stuff
 (setq comint-scroll-to-bottom-on-input (quote this))
@@ -262,185 +195,6 @@
      (global-set-key [(control x)(control r)] 'sudo-reopen-file)))
 
 (require 'tramp)
-
-;; Color theme
-(eval-when-compile    (require 'color-theme))
-(defun my-color-theme ()
-  "Color theme by Kenneth M. DeTullio, created 2010-11-26."
-  (interactive)
-  (color-theme-install
-   '(my-color-theme
-     ((background-color . "dark slate grey")
-      (background-mode . dark)
-      (border-color . "black")
-      (cursor-color . "black")
-      (foreground-color . "black")
-      (mouse-color . "black"))
-     ((ac-fuzzy-cursor-color . "red")
-      (list-matching-lines-buffer-name-face . underline)
-      (list-matching-lines-face . match)
-      (term-default-bg-color . "dark slate grey")
-      (term-default-fg-color . "black")
-      (view-highlight-face . highlight)
-      (widget-mouse-face . highlight))
-     (default ((t (:stipple nil :background "dark slate grey" :foreground "black" :inverse-video nil
-                   :box nil :strike-through nil :overline nil :underline nil :slant normal
-                   :weight normal :height 118 :width normal :foundry "urw" :family "Nimbus Mono L"))))
-     (ac-candidate-face ((t (:background "lightgray" :foreground "black"))))
-     (ac-completion-face ((t (:foreground "darkgray" :underline t))))
-     (ac-gtags-candidate-face ((t (:background "lightgray" :foreground "navy"))))
-     (ac-gtags-selection-face ((t (:background "navy" :foreground "white"))))
-     (ac-selection-face ((t (:background "steelblue" :foreground "white"))))
-     (ac-yasnippet-candidate-face ((t (:background "sandybrown" :foreground "black"))))
-     (ac-yasnippet-selection-face ((t (:background "coral3" :foreground "white"))))
-     (org-hide ((((background dark)) (:foreground "darkslategray"))))
-     (bold ((t (:bold t :weight bold))))
-     (bold-italic ((t (:italic t :bold t :slant italic :weight bold))))
-     (border ((t (nil))))
-     (buffer-menu-buffer ((t (:bold t :weight bold))))
-     (button ((t (:underline t))))
-     (completions-common-part ((t (:family "Nimbus Mono L" :foundry "urw" :width normal :weight normal
-                                           :slant normal :underline nil :overline nil :strike-through nil
-                                           :box nil :inverse-video nil :foreground "black"
-                                           :background "dark slate grey" :stipple nil :height 118))))
-     (completions-first-difference ((t (:bold t :weight bold))))
-     (cursor ((t (nil))))
-     (dired-directory ((t (:bold t :weight bold :foreground "OliveDrab"))))
-     (dired-flagged ((t (:foreground "yellow" :background "red"))))
-     (dired-header ((t (:foreground "#9290ff"))))
-     (dired-ignored ((t (:foreground "grey70"))))
-     (dired-mark ((t (:bold t :weight bold :foreground "white"))))
-     (dired-marked ((t (:foreground "yellow" :background "red"))))
-     (dired-perm-write ((t (:foreground "white"))))
-     (dired-symlink ((t (:foreground "DarkOliveGreen3"))))
-     (dired-warning ((t (:foreground "yellow" :background "red"))))
-     (diredp-date-time ((((background dark)) (:foreground "black"))))                      
-     (diredp-deletion-file-name ((t (:foreground "Red" :strike-through t))))               
-     (diredp-dir-heading ((((background dark)) (:foreground "black" :weight extra-bold)))) 
-     (diredp-exec-priv ((((background dark)) (:background "gray30"))))                     
-     (diredp-number ((((background dark)) (:foreground "black"))))                         
-     (diredp-read-priv ((((background dark)) (:background "slategray"))))                  
-     (diredp-dir-priv ((((background dark)) (:weight bold :foreground "black"))))
-     (diredp-write-priv ((((background dark)) (:background "darkslategray"))))
-     (diredp-file-name ((((background dark)) (:foreground "black"))))
-     (diredp-file-suffix ((((background dark)) (:foreground "gray10"))))
-     (diredp-ignored-file-name ((((background dark)) (:foreground "gray15"))))
-     (ediff-current-diff-A ((((class color) (min-colors 16)) (:foreground "black" :background "lightslategray"))))
-     (ediff-current-diff-B ((((class color) (min-colors 16)) (:foreground "black" :background "lightslategray"))))
-     (smerge-refined-change ((t (:slant italic))))
-     (eieio-custom-slot-tag-face ((t (:foreground "light blue"))))
-     (eldoc-highlight-function-argument ((t (:bold t :weight bold))))
-     (escape-glyph ((t (:foreground "gray10"))))
-     (file-name-shadow ((t (:foreground "grey70"))))
-     (find-file-root-header-face ((t (:background "red3" :foreground "white"))))
-     (fixed-pitch ((t (:family "Monospace"))))
-     (font-lock-builtin-face ((t (:bold t :weight extra-bold))))
-     (font-lock-comment-delimiter-face ((t (:foreground "white"))))
-     (font-lock-comment-face ((t (:foreground "white"))))
-     (font-lock-constant-face ((t (:bold t :foreground "white" :weight bold))))
-     (font-lock-doc-face ((t (:italic t :slant italic :foreground "white"))))
-     (font-lock-function-name-face ((t (:bold t :foreground "OliveDrab" :weight bold))))
-     (font-lock-keyword-face ((t (:foreground "DarkOliveGreen3"))))
-     (font-lock-negation-char-face ((t (nil))))
-     (font-lock-preprocessor-face ((t (:foreground "Blue4"))))
-     (font-lock-regexp-grouping-backslash ((t (:bold t :weight bold))))
-     (font-lock-regexp-grouping-construct ((t (:bold t :weight bold))))
-     (font-lock-string-face ((t (:italic t :foreground "white" :slant italic))))
-     (font-lock-type-face ((t (:foreground "#9290ff"))))
-     (font-lock-variable-name-face ((t (:italic t :bold t :foreground "gray45" :slant italic :weight bold))))
-     (font-lock-warning-face ((t (:background "red" :foreground "yellow"))))
-     (fringe ((t (:background "grey10" :foreground "gray90"))))
-     (header-line ((t (:background "grey20" :foreground "grey90" :box nil))))
-     (help-argument-name ((t (:italic t :slant italic))))
-     (highlight ((t (nil))))
-     (initz-list-module-face ((t (:foreground "green"))))
-     (initz-list-node-face ((t (:foreground "cyan"))))
-     (initz-list-unloaded-module-face ((t (:foreground "gray"))))
-     (isearch ((t (:background "yellow"))))
-     (isearch-fail ((t (:background "red4"))))
-     (italic ((t (:italic t :slant italic))))
-     (lazy-highlight ((t (:background "Goldenrod"))))
-     (link ((t (:foreground "gray" :underline t))))
-     (link-visited ((t (:underline t :foreground "black"))))
-     (match ((t (:background "RoyalBlue3"))))
-     (menu ((t (nil))))
-     (minibuffer-prompt ((t (:foreground "white"))))
-     (mode-line ((t (:background "gray30" :foreground "gray80"))))
-     (mode-line-buffer-id ((t (:background "gray30" :foreground "gray80"))))
-     (mode-line-emphasis ((t (:bold t :weight bold))))
-     (mode-line-highlight ((t (:box (:line-width 2 :color "grey40" :style released-button)))))
-     (mode-line-inactive ((t (:foreground "gray80" :background "gray30"))))
-     (mouse ((t (nil))))
-     (next-error ((t (nil))))
-     (nobreak-space ((t (:foreground "gray10" :underline t))))
-     (popup-face ((t (:background "lightgray" :foreground "black"))))
-     (popup-isearch-match ((t (:background "sky blue"))))
-     (popup-menu-face ((t (:background "lightgray" :foreground "black"))))
-     (popup-menu-selection-face ((t (:background "steelblue" :foreground "white"))))
-     (popup-scroll-bar-background-face ((t (:background "gray"))))
-     (popup-scroll-bar-foreground-face ((t (:background "black"))))
-     (popup-tip-face ((t (:background "khaki1" :foreground "black"))))
-     (pp^L-highlight ((t (:box (:line-width 3 :style pressed-button)))))
-     (query-replace ((t (:background "yellow"))))
-     (region ((t (nil))))
-     (rtf-brace-face ((t (:italic t :slant italic :foreground "white"))))
-     (rtf-charescape-face ((t (:bold t :weight bold :foreground "OliveDrab"))))
-     (rtf-cword-endingspace-face ((t (:foreground "white"))))
-     (rtf-cword-face ((t (:foreground "DarkOliveGreen3"))))
-     (rtf-cword-param-face ((t (:bold t :weight extra-bold))))
-     (rtf-escnewline-face ((t (:bold t :weight bold :foreground "white"))))
-     (rtf-escother-face ((t (:foreground "#9290ff"))))
-     (rtf-esctab-face ((t (:foreground "yellow" :background "red"))))
-     (rtf-loud-cword-face ((t (:foreground "yellow" :background "red"))))
-     (rtf-star-face ((t (:italic t :foreground "white" :slant italic))))
-     (rtf-trailing-whitespace-face ((t (nil))))
-     (scroll-bar ((t (nil))))
-     (secondary-selection ((t (:background "SkyBlue4"))))
-     (semantic-highlight-edits-face ((t (:background "gray20"))))
-     (semantic-unmatched-syntax-face ((t (:underline "red"))))
-     (semantic-tag-boundary-face ((((class color) (background dark)) (:overline "black"))))
-     (shadow ((t (:foreground "grey70"))))
-     (sr-active-path-face ((t (:bold t :background "#ace6ac" :foreground "yellow" :weight bold :height 120))))
-     (sr-alt-marked-dir-face ((t (:bold t :foreground "DeepPink" :weight bold))))
-     (sr-alt-marked-file-face ((t (nil))))
-     (sr-broken-link-face ((t (:italic t :foreground "red" :slant italic))))
-     (sr-clex-hotchar-face ((t (:bold t :foreground "red" :weight bold))))
-     (sr-compressed-face ((t (:foreground "magenta"))))
-     (sr-directory-face ((t (:bold t :foreground "gray" :underline t :weight bold))))
-     (sr-editing-path-face ((t (:bold t :background "red" :foreground "yellow" :weight bold :height 120))))
-     (sr-encrypted-face ((t (:foreground "DarkOrange1"))))
-     (sr-highlight-path-face ((t (:bold t :background "yellow" :foreground "#ace6ac" :weight bold :height 120))))
-     (sr-html-face ((t (:foreground "DarkOliveGreen"))))
-     (sr-log-face ((t (:foreground "white"))))
-     (sr-marked-dir-face ((t (:bold t :foreground "black" :strike-through t :weight bold))))
-     (sr-marked-file-face ((t (:foreground "black" :strike-through t))))
-     (sr-packaged-face ((t (:foreground "DarkMagenta"))))
-     (sr-passive-path-face ((t (:bold t :background "white" :foreground "lightgray" :weight bold :height 120))))
-     (sr-symlink-directory-face ((t (:italic t :foreground "blue1" :slant italic))))
-     (sr-symlink-face ((t (:italic t :foreground "DeepSkyBlue" :slant italic))))
-     (sr-xml-face ((t (:foreground "DarkGreen"))))
-     (tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :style released-button)))))
-     (tooltip ((t (:foreground "black"))))
-     (trailing-whitespace ((t (:background "slate gray"))))
-     (underline ((t (:underline t))))
-     (variable-pitch ((t (:family "Sans Serif"))))
-     (vertical-border ((t (nil))))
-     (widget-button ((t (:bold t :weight bold))))
-     (widget-button-pressed ((t (:foreground "red1"))))
-     (widget-documentation ((t (:foreground "lime green"))))
-     (widget-field ((t (nil))))
-     (widget-inactive ((t (:foreground "grey70"))))
-     (widget-single-line-field ((t (:background "dim gray")))))))
-
-(add-to-list 'color-themes '(my-color-theme  "DeTullio Dark" "Kenneth M. DeTullio"))
-
-(require 'color-theme)
-(setq color-theme-is-global t)
-(my-color-theme)
-
-;;(setq use-system-font t)
-
-(require 'sr-speedbar)
 
 ;;debugging
 (setq gdb-many-windows nil)
@@ -544,21 +298,15 @@
 ;; ;; (autoload 'ack-find-same-file "full-ack" nil t)
 ;; ;; (autoload 'ack-find-file "full-ack" nil t)
 
-;; (transient-mark-mode 0)
-
 ;; (setq ring-bell-function
 ;;       (lambda ()
 ;;         (unless (memq this-command
 ;;                       '(isearch-abort abort-recursive-edit exit-minibuffer keyboard-quit))
 ;;           (ding))))
 
-;; ;; (require `sunrise-commander)
-
-;; ;; (require 'rtf-mode)
-
 (global-set-key [(control shift b)] 'recompile)
 (global-set-key [(control shift x)] 'desktop-clear)
-;; (global-set-key [(control x)(control meta x)] 'tags-search)
+(global-set-key [(control x)(meta x)] 'tags-search)
 (global-set-key [(control c) (control c)] 'comment-region)
 (global-set-key [(control c) (control u)] 'uncomment-region)
 
@@ -732,3 +480,17 @@ of current buffer@enddots{}"
 
 (setq debug-on-error nil)
 (setq stack-trace-on-error nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("dd2346baba899fa7eee2bba4936cfcdf30ca55cdc2df0a1a4c9808320c4d4b22" "9a3c51c59edfefd53e5de64c9da248c24b628d4e78cc808611abd15b3e58858f" "abd7719fd9255fcd64f631664390e2eb89768a290ee082a9f0520c5f12a660a8" "ab04c00a7e48ad784b52f34aa6bfa1e80d0c3fcacc50e1189af3651013eb0d58" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "04dd0236a367865e591927a3810f178e8d33c372ad5bfef48b5ce90d4b476481" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
