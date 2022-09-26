@@ -57,7 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1="\n\[\033[35m\]\$(/bin/date)\n\[\033[32m\]\w\n\[\033[1;30m\]\u@\h: \[\033[1;36m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::'): \[\033[1;36m\]\$(/bin/ls -1 | /usr/bin/wc -l | /bin/sed 's: ::g') files \[\033[1;33m\]\$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b\[\033[0m\] -> \[\033[0m\]"
+    PS1="\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")\n\[\033[2;37m\]\w\n\[\033[1;30m\]\u@\h: \[\033[1;36m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::')> \[\033[0m\]"
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
