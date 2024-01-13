@@ -13,7 +13,9 @@
 (setq compilation-skip-threshold 2)
 (setq compilation-skip-visited t)
 (setq compilation-window-height 20)
-(setq compile-command "scons ")
+;;(setq compile-command "scons ")
+
+(setq compile-command "cmake --build ~/working/building/")
 
 ;;SCons file font-lock
 (setq auto-mode-alist

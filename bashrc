@@ -1,4 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+#s ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -56,8 +56,15 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# enable colored prompt for git branches
+# using parse_git_branch
+parse_git_branch() {
+ git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
 if [ "$color_prompt" = yes ]; then
-    PS1="\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")\n\[\033[2;37m\]\w\n\[\033[1;30m\]\u@\h: \[\033[1;36m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::')> \[\033[0m\]"
+    PS1="\n \[\033[2;30m\]\u@\h:\$(/usr/bin/tty | /bin/sed -e 's:dev/::') \w\n\$(parse_git_branch)\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")> > >\[\033[0m\]"
+#    PS1="\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")\n\[\033[2;37m\]\w\n\[\033[1;30m\]\u@\h: \[\033[1;36m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::')> \[\033[0m\]"
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi

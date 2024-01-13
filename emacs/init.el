@@ -35,13 +35,10 @@
 (setq truncate-lines 1)
 (setq global-font-lock-mode t)
 
+;; theme me
 (load-theme 'KDeT t)
 (set-face-attribute 'default nil :font "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1")
 (set-frame-font "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1" nil t)
-;;Org-mode
-;;(setq org-agenda-files "~/")
-;;(quote ("~/Documents/OrgFiles/Projects/ProScuzNetwork.org" "~/Documents/OrgFiles/RandomResearch.org" "~/Documents/OrgFiles/todo.org")))
-(setq org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
 
 (defconst font-lock-maximum-decoration t)
 (setq visible-bell 1)
@@ -121,6 +118,30 @@
 
 ;;M-k kills to the left
 (global-set-key "\M-k" '(lambda () (interactive) (kill-line 0)) )
+
+;;Org-mode
+;; (setq org-agenda-files "~/")
+;; (quote ("~/Documents/OrgFiles/Projects/ProScuzNetwork.org" "~/Documents/OrgFiles/RandomResearch.org" "~/Documents/OrgFiles/todo.org")))
+
+(setq org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
+(add-to-list 'load-path "~/.emacs.d/InitFiles/")
+(load "compilation")
+(load "c_c++")
+(load "fortran")
+(load "csv")
+(load "beamer")
+(load "gdb")
+(load "lua")
+(load "packages")
+(load "python")
+
+;; ansi color??
+(when (require 'ansi-color nil t)
+(defun my-colorize-compilation-buffer ()
+    (when (eq major-mode 'compilation-mode)
+      (ansi-color-apply-on-region compilation-filter-start (point-max))))
+
+(add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
 
 ;; ;; (defalias 'SourceClean (read-kbd-macro
 
@@ -210,19 +231,3 @@
 
 (setq debug-on-error nil)
 (setq stack-trace-on-error nil)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(custom-safe-themes
-   '("f8be47132dd23590ecfb3b32f9ba8b8d0c8062f107aac6f9da0f5072e287d7ce" default))
- '(package-selected-packages '(lua-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
