@@ -95,7 +95,11 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # some more ls aliases
 alias l='ls -lFhX'
 
+alias qmacs='emacs -nw -q'
+
 alias ghis='history|grep'
+alias whis='history -w'
+alias rm='trash'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -120,4 +124,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-xmodmap .Xmodmap
+if [ -x ~/.Xmodmap ]; then
+   xmodmap ~/.Xmodmap
+fi
