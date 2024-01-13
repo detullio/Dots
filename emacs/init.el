@@ -120,8 +120,7 @@
 (global-set-key "\M-k" '(lambda () (interactive) (kill-line 0)) )
 
 ;;Org-mode
-;; (setq org-agenda-files "~/")
-;; (quote ("~/Documents/OrgFiles/Projects/ProScuzNetwork.org" "~/Documents/OrgFiles/RandomResearch.org" "~/Documents/OrgFiles/todo.org")))
+(setq org-agenda-files (quote ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org")))
 
 (setq org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
 (add-to-list 'load-path "~/.emacs.d/InitFiles/")
@@ -143,91 +142,73 @@
 
 (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
 
-;; ;; (defalias 'SourceClean (read-kbd-macro
+(defalias 'SourceClean (read-kbd-macro
+                        "<C-home> C-SPC <C-end> M-x untabify TAB RET <C-home> M-x repl TAB rege TAB RET 2*SPC * RET SPC RET <C-home> C-SPC <C-end> M-x inden TAB - reg TAB RET"))
 
-;; ;; "<C-home> C-SPC <C-end> M-x untabify TAB RET <C-home> M-x repl TAB rege TAB RET 2*SPC * RET SPC RET <C-home> C-SPC <C-end> M-x inden TAB - reg TAB RET"))
+;; pulled from comp.emacs discussion
+;; http://groups.google.com/group/comp.emacs/browse_thread/thread/6fcb3d62d7a501af/c6590cf7ab1f1876?show_docid=c6590cf7ab1f1876#
+(defface find-file-root-header-face
+  '((t (:foreground "white" :background "red3")))
+  "*Face use to display header-lines for files opened as root.")
 
-;; ;; ;; pulled from comp.emacs discussion
-;; ;; ;; http://groups.google.com/group/comp.emacs/browse_thread/thread/6fcb3d62d7a501af/c6590cf7ab1f1876?show_docid=c6590cf7ab1f1876#
-;; ;; (defface find-file-root-header-face
-;; ;;   '((t (:foreground "white" :background "red3")))
-;; ;;   "*Face use to display header-lines for files opened as root.")
+(defun find-file-root-header-warning ()
+  "*Display a warning in header line of the current buffer.
+This function is suitable to add to `find-file-hook'."
+  (when (string-equal
+         (file-remote-p (or buffer-file-name default-directory) 'user)
+         "root")
+    (let* ((warning "WARNING: EDITING FILE AS ROOT!")
+           (space (+ 6 (- (window-width) (length warning))))
+           (bracket (make-string (/ space 2) ?-))
+           (warning (concat bracket warning bracket)))
+      (setq header-line-format
+            (propertize  warning 'face 'find-file-root-header-face)))))
 
-;; ;; (defun find-file-root-header-warning ()
-;; ;;   "*Display a warning in header line of the current buffer.
-;; ;; This function is suitable to add to `find-file-hook'."
-;; ;;   (when (string-equal
-;; ;;          (file-remote-p (or buffer-file-name default-directory) 'user)
-;; ;;          "root")
-;; ;;     (let* ((warning "WARNING: EDITING FILE AS ROOT!")
-;; ;;            (space (+ 6 (- (window-width) (length warning))))
-;; ;;            (bracket (make-string (/ space 2) ?-))
-;; ;;            (warning (concat bracket warning bracket)))
-;; ;;       (setq header-line-format
-;; ;;             (propertize  warning 'face 'find-file-root-header-face)))))
+(defun find-alternative-file-with-sudo ()
+  (interactive)
+  (let ((bname (expand-file-name (or buffer-file-name
+                                     default-directory)))
+        (pt (point)))
+    (setq bname (or (file-remote-p bname 'localname)
+                    (concat "/sudo::" bname)))
+    ;; FIXME mostly works around, but not quite
+    (flet ((server-buffer-done
+            (buffer &optional for-killing)
+            nil))
+      (find-alternate-file bname))
+    (goto-char pt)))
 
-;; ;; (defun find-alternative-file-with-sudo ()
-;; ;;   (interactive)
-;; ;;   (let ((bname (expand-file-name (or buffer-file-name
-;; ;;                                      default-directory)))
-;; ;;         (pt (point)))
-;; ;;     (setq bname (or (file-remote-p bname 'localname)
-;; ;;                     (concat "/sudo::" bname)))
-;; ;;     ;; FIXME mostly works around, but not quite
-;; ;;     (flet ((server-buffer-done
-;; ;;             (buffer &optional for-killing)
-;; ;;             nil))
-;; ;;       (find-alternate-file bname))
-;; ;;     (goto-char pt)))
+;; normally this is bound to find-file-read-only
+;; use M-x toggle-read-only instead
+(global-set-key (kbd "C-x C-r") 'find-alternative-file-with-sudo)
 
-;; ;; ;; normally this is bound to find-file-read-only
-;; ;; ;; use M-x toggle-read-only instead
-;; ;; (global-set-key (kbd "C-x C-r") 'find-alternative-file-with-sudo)
+(add-hook 'find-file-hook 'find-file-root-header-warning)
+(add-hook 'dired-mode-hook 'find-file-root-header-warning)
 
-;; ;; (add-hook 'find-file-hook 'find-file-root-header-warning)
-;; ;; (add-hook 'dired-mode-hook 'find-file-root-header-warning)
+(autoload 'word-count-mode "word-count"
+  "Minor mode to count words." t nil)
+(global-set-key "\M-+" 'word-count-mode)
 
-;; ;; (autoload 'word-count-mode "word-count"
-;; ;;   "Minor mode to count words." t nil)
-;; ;; (global-set-key "\M-+" 'word-count-mode)
+;; Automatically uncompress .gz files
+(auto-compression-mode)
 
-;; ;; ;; Automatically uncompress .gz files
-;; ;; (auto-compression-mode)
+(setq backup-directory-alist `(("." . "~/.emacsBak")))
+(setq backup-by-copying-when-linked t)
 
-;; ;; setup backup and autosave
-;; (setq version-control t)
-;; (setq delete-auto-save-files t)
+(setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 
-;; (setq auto-save-file-name-transforms
-;;       `((".*" ,temporary-file-directory t)))
 
-;; ;; create a backup file directory
-;; (defun make-backup-file-name (file)
-;;   (concat "~/.emacs.d/backups/" (file-name-nondirectory file) "~"))
+(setq completion-ignored-extensions
+      '(".obj" ".xpt" ".a" ".so" ".o" ".d" ".elc" ".class" "~" ".ckp" ".bak" ".imp" ".lpt" ".bin" ".otl" ".err" ".lib" ".x9700" ".aux" ))
 
-;; (defun auto-save-file-name-p (filename)
-;;   "Return non-nil if FILENAME can be yielded by..."
-;;   (string-match "~\/\.emacs\.d\/autosave\/#.*#$" filename))
+;;long lines during commit messages
+(add-to-list 'auto-mode-alist '("/bzr_log\\." . longlines-mode))
 
-;; (defun make-auto-save-file-name ()
-;;   "Return file name to use for auto-saves \
-;; of current buffer@enddots{}"
-;;   (if buffer-file-name
-;;       (concat
-;;        "~/.emacs.d/autosave/" "#"
-;;        (file-name-nondirectory buffer-file-name)
-;;        "#")
-;;     (expand-file-name
-;;      (concat "#%" (buffer-name) "#"))))
-
-;; ;; (setq completion-ignored-extensions
-;; ;;       '(".obj" ".xpt" ".a" ".so" ".o" ".d" ".elc" ".class" "~" ".ckp" ".bak" ".imp" ".lpt" ".bin" ".otl" ".err" ".lib" ".x9700" ".aux" ))
-
-;; ;; ;;long lines during commit messages
-;; ;; (add-to-list 'auto-mode-alist '("/bzr_log\\." . longlines-mode))
-
-;; ;; ;;load dvc stuff
-;; ;; ;; (require 'dvc-autoloads)
+;;load dvc stuff
+;; (require 'dvc-autoloads)
 
 (setq debug-on-error nil)
 (setq stack-trace-on-error nil)
