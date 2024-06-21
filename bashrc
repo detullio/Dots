@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+export PATH="$HOME/Scripts:$PATH"
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -10,14 +12,14 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth:erasedups
+export HISTCONTROL=ignoreboth:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+export HISTSIZE=10000
+export HISTFILESIZE="$HISTSIZE"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -34,11 +36,6 @@ shopt -s checkwinsize
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
@@ -92,6 +89,8 @@ fi
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+export GREP_COLORS='ms=01:mc=01;31:sl=:cx=:fn=0:ln=32:bn=32:se=36'
+
 # some more ls aliases
 alias l='ls -lFhX'
 
@@ -99,6 +98,7 @@ alias qmacs='emacs -nw -q'
 
 alias ghis='history|grep'
 alias whis='history -w'
+alias rhis='history -w'
 alias rm='trash'
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -127,3 +127,4 @@ fi
 if [ -x ~/.Xmodmap ]; then
    xmodmap ~/.Xmodmap
 fi
+

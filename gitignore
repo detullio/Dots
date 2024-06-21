@@ -1,0 +1,4 @@
+# git config --global core.excludesFile '~/.gitignore'
+.emacs.desktop
+*.orig
+.emacs.desktop.lock

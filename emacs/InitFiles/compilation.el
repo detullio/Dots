@@ -5,6 +5,8 @@
   (setq truncate-partial-width-windows nil))
 (add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
 
+(add-hook 'compilation-mode-hook (lambda () (text-scale-increase 2)))
+
 ;;other compilation stuff
 (setq comint-scroll-to-bottom-on-input (quote this))
 (setq compilation-auto-jump-to-first-error nil)

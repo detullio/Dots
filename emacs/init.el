@@ -1,14 +1,15 @@
 ;;Turn on debug for load of init.el
 (setq debug-on-error t)
-(setq stack-trace-on-error t)
 
 (require 'package)
 (package-initialize)
 
+;;(setq package-check-signature nil)
+
 (setq package-archives
       '(("melpa" . "http://melpa.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")))
-(package-refresh-contents)
+;;(package-refresh-contents)
 
 ; Do without annoying startup msg.
 (setq inhibit-startup-message t)
@@ -31,8 +32,9 @@
 (put 'scroll-left 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+
 (setq split-width-threshold nil)
-(setq truncate-lines 1)
+(setq-default truncate-lines t)
 (setq global-font-lock-mode t)
 
 ;; theme me
@@ -43,9 +45,6 @@
 (defconst font-lock-maximum-decoration t)
 (setq visible-bell 1)
 
-;;camelcase mode
-(autoload 'camelCase-mode "camelCase-mode" t)
-
 (setq column-number-mode t)
 
 ;; Always end a file with a newline
@@ -54,15 +53,16 @@
 ;; Stop at the end of the file, not just add lines
 (setq next-line-add-newlines nil)
 
+;;Dired
 (setq dired-listing-switches "-hlX")
 (setq-default dired-omit-files-p t) ; this is buffer-local variable
-(setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..?")
+(setq-default dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..?")
 
-(setq develock-max-column-plist (quote
-                                 (emacs-lisp-mode w lisp-interaction-mode w change-log-mode w texinfo-mode
-                                                  w c-mode w c++-mode w java-mode w jde-mode w html-mode
-                                                  w html-helper-mode w cperl-mode w perl-mode w mail-mode
-                                                  t message-mode t cmail-mail-mode t tcl-mode 79 ruby-mode 79)))
+(setq-default develock-max-column-plist (quote
+                                         (emacs-lisp-mode w lisp-interaction-mode w change-log-mode w texinfo-mode
+                                                          w c-mode w c++-mode w java-mode w jde-mode w html-mode
+                                                          w html-helper-mode w cperl-mode w perl-mode w mail-mode
+                                                          t message-mode t cmail-mail-mode t tcl-mode 79 ruby-mode 79)))
 
 ;;reuse frame if buffer open
 (setq-default display-buffer-reuse-frames t)
@@ -72,7 +72,7 @@
 
 (eval-after-load "tramp"
   '(progn
-     (defvar sudo-tramp-prefix 
+     (defvar sudo-tramp-prefix
        "/sudo:" 
        (concat "Prefix to be used by sudo commands when building tramp path "))
      (defun sudo-file-name (filename)
@@ -120,10 +120,12 @@
 (global-set-key "\M-k" '(lambda () (interactive) (kill-line 0)) )
 
 ;;Org-mode
-(setq org-agenda-files (quote ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org")))
+(setq-default org-agenda-files (quote ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org")))
 
-(setq org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
+(setq-default org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
+
 (add-to-list 'load-path "~/.emacs.d/InitFiles/")
+
 (load "compilation")
 (load "c_c++")
 (load "fortran")
@@ -141,6 +143,8 @@
       (ansi-color-apply-on-region compilation-filter-start (point-max))))
 
 (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
+
+(setq directory-abbrev-alist '(("^/mnt/host/" . "./")))
 
 (defalias 'SourceClean (read-kbd-macro
                         "<C-home> C-SPC <C-end> M-x untabify TAB RET <C-home> M-x repl TAB rege TAB RET 2*SPC * RET SPC RET <C-home> C-SPC <C-end> M-x inden TAB - reg TAB RET"))
@@ -200,9 +204,11 @@ This function is suitable to add to `find-file-hook'."
   kept-old-versions 2
   version-control t)
 
-
 (setq completion-ignored-extensions
       '(".obj" ".xpt" ".a" ".so" ".o" ".d" ".elc" ".class" "~" ".ckp" ".bak" ".imp" ".lpt" ".bin" ".otl" ".err" ".lib" ".x9700" ".aux" ))
+
+(desktop-save-mode 1)
+(setq desktop-path '("."))
 
 ;;long lines during commit messages
 (add-to-list 'auto-mode-alist '("/bzr_log\\." . longlines-mode))
@@ -211,4 +217,18 @@ This function is suitable to add to `find-file-hook'."
 ;; (require 'dvc-autoloads)
 
 (setq debug-on-error nil)
-(setq stack-trace-on-error nil)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (yasnippet lua-mode fill-column-indicator ibuffer-vc ibuffer-tramp ibuffer-git all-the-icons-ibuffer gnu-elpa-keyring-update eglot python-mode resize-window windresize google-c-style flycheck-google-cpplint cmake-mode yaml-imenu yaml tabbar session pod-mode muttrc-mode mutt-alias markdown-mode initsplit htmlize graphviz-dot-mode folding eproject diminish csv-mode browse-kill-ring boxquote bm bar-cursor apache-mode))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
