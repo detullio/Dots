@@ -4,12 +4,14 @@
 (require 'package)
 (package-initialize)
 
+;; Uncomment if package refresh below fails due to signatures and restart,
+;; after that keyring update should allow it to be recommented
 ;;(setq package-check-signature nil)
 
 (setq package-archives
       '(("melpa" . "http://melpa.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")))
-;;(package-refresh-contents)
+(package-refresh-contents)
 
 ; Do without annoying startup msg.
 (setq inhibit-startup-message t)
@@ -224,8 +226,7 @@ This function is suitable to add to `find-file-hook'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (yasnippet lua-mode fill-column-indicator ibuffer-vc ibuffer-tramp ibuffer-git all-the-icons-ibuffer gnu-elpa-keyring-update eglot python-mode resize-window windresize google-c-style flycheck-google-cpplint cmake-mode yaml-imenu yaml tabbar session pod-mode muttrc-mode mutt-alias markdown-mode initsplit htmlize graphviz-dot-mode folding eproject diminish csv-mode browse-kill-ring boxquote bm bar-cursor apache-mode))))
+   '(markdown-preview-mode yasnippet lua-mode fill-column-indicator ibuffer-vc ibuffer-tramp ibuffer-git all-the-icons-ibuffer gnu-elpa-keyring-update eglot python-mode resize-window windresize google-c-style flycheck-google-cpplint cmake-mode yaml-imenu yaml tabbar session pod-mode muttrc-mode mutt-alias markdown-mode initsplit htmlize graphviz-dot-mode folding eproject diminish csv-mode browse-kill-ring boxquote bm bar-cursor apache-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

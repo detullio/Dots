@@ -2,7 +2,7 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-export PATH="$HOME/Scripts:$PATH"
+export PATH="$HOME/Scripts:$HOME/.local/bin:$PATH"
 
 # If not running interactively, don't do anything
 case $- in
@@ -98,7 +98,7 @@ alias qmacs='emacs -nw -q'
 
 alias ghis='history|grep'
 alias whis='history -w'
-alias rhis='history -w'
+alias rhis='history -r'
 alias rm='trash'
 
 # Add an "alert" alias for long running commands.  Use like so:
