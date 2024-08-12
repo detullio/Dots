@@ -223,8 +223,12 @@ This function is suitable to add to `find-file-hook'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
+<<<<<<< HEAD
    (quote
     (ztree visual-fill-column yasnippet lua-mode fill-column-indicator ibuffer-vc ibuffer-tramp ibuffer-git all-the-icons-ibuffer gnu-elpa-keyring-update eglot python-mode resize-window windresize google-c-style flycheck-google-cpplint cmake-mode yaml-imenu yaml tabbar session pod-mode muttrc-mode mutt-alias markdown-mode initsplit htmlize graphviz-dot-mode folding eproject diminish csv-mode browse-kill-ring boxquote bm bar-cursor apache-mode))))
+=======
+   '(markdown-preview-mode yasnippet lua-mode fill-column-indicator ibuffer-vc ibuffer-tramp ibuffer-git all-the-icons-ibuffer gnu-elpa-keyring-update eglot python-mode resize-window windresize google-c-style flycheck-google-cpplint cmake-mode yaml-imenu yaml tabbar session pod-mode muttrc-mode mutt-alias markdown-mode initsplit htmlize graphviz-dot-mode folding eproject diminish csv-mode browse-kill-ring boxquote bm bar-cursor apache-mode)))
+>>>>>>> c62475c (updated for new home setup, fixed typo in init.el)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
