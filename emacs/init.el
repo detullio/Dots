@@ -17,7 +17,6 @@
 ;; Uncomment if package refresh below fails due to signatures and restart,
 ;; after that keyring update should allow it to be recommented
 ;;(setq package-check-signature nil)
-;;(setq package-check-signature "allow-unsigned")
 
 (if (not package-check-signature)
     (message "Package signature check disabled")
