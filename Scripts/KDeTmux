@@ -1,0 +1,17 @@
+#!/bin/bash
+# var for session name (to avoid repeated occurences)
+sessionName=$(basename $1)
+
+# Start the session and window 0 in /etc
+#   This will also be the default cwd for new windows created
+#   via a binding unless overridden with default-path.
+cd $1
+tmux new-session -s "$sessionName" -n "$sessionName" -d
+
+# Set the default cwd for new windows (optional, otherwise defaults to session cwd)
+tmux set-option default-path $1
+
+# Select window #1 and attach to the session
+tmux select-window -t "$sessionName:1"
+tmux split-window -v
+tmux -2 attach-session -t "$sessionName"

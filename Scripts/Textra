@@ -1,0 +1,6 @@
+#!/bin/bash
+tmux new-session  -d -s Working "~/Scripts/startBash $1"
+tmux rename-window 'working'
+tmux select-window -t Working:0
+tmux split-window -h  "~/Scripts/startBash $1"
+tmux -2 attach-session -t Working

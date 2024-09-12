@@ -1,36 +1,44 @@
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+clean = git-lfs clean -- %f
+
 [credential]
-	helper = manager-core
+helper = manager-core
+
 [user]
-	name = Kenneth M. DeTullio
-	email = detullio@gmail.com
-[diff]
-	tool = bc
-[difftool "bc"]
-	trustExitCode = true
-[merge]
-	tool = bc
-[mergetool "bc"]
-	trustExitCode = true
+name = Kenneth M. DeTullio
+email = kenneth.detullio@gtri.gatech.edu
+
 [core]
-	excludesFile = ~/.gitignore
+excludesFile = ~/.gitignore
 
 [color]
-    ui = auto
+ui = auto
+
 [color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
+current = yellow reverse
+local = yellow
+remote = green
+
 [color "diff"]
-    meta = black
-    frag = yellow
-    old = cyan
-    new = green
+meta = black
+frag = yellow
+old = cyan
+new = green
+
 [color "status"]
-    added = green
-    changed = white bold
-    untracked = white
+added = green
+changed = white bold
+untracked = white
+
+[status]
+submodulesummary = 1
+
+[diff]
+tool = bc
+
+
+[merge]
+tool = bc

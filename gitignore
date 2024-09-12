@@ -2,3 +2,6 @@
 .emacs.desktop
 *.orig
 .emacs.desktop.lock
+.clangd/
+TAGS
+compile_commands.json

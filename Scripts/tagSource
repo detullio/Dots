@@ -1,0 +1,2 @@
+rm TAGS
+find . -type d \( -path ./build_amd64 -o -path ./CTS_Configs -o -path ./build  -o -path ./build_amd64  -o -path ./build_artifacts  -o -path ./build_tss_amd64  -o -path ./install  -o -path ./install_amd64  -o -path ./raft  -o -path ./Scripts  -o -path ./ts_internals -o -path ./Common/FACE -o -path ./Common/generatedts \) -prune -o -regex ".*\.[c|h]p*" -exec etags -a {} \;

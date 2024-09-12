@@ -1,11 +1,17 @@
 
 (setq-default indent-tabs-mode nil)
 
-;; C-Mode stuff
-
 (add-hook 'c-mode-common-hook `subword-mode)
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-mode-common-hook 'google-set-c-style)
+
+(require 'eglot)
+
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+
+(add-hook 'c-mode-hook 'eglot-ensure)
+
+(add-hook 'c++-mode-hook 'eglot-ensure)
 
 ;; (add-hook 'c-mode-common-hook 'c-basic-offset 4)
 ;; (add-hook 'c-mode-common-hook 'custom-buffer-indent 4)

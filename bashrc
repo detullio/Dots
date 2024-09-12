@@ -128,3 +128,5 @@ if [ -x ~/.Xmodmap ]; then
    xmodmap ~/.Xmodmap
 fi
 
+source /home/kdetullio3/miniconda3/etc/profile.d/conda.sh
+conda activate
