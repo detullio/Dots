@@ -1,20 +1,86 @@
 ;;Turn on debug for load of init.el
 (setq debug-on-error t)
 
+(with-current-buffer (messages-buffer)
+  (goto-char (point-max)
+             )
+  (switch-to-buffer (current-buffer)
+                    )
+  )
+
+; Do without annoying startup msg.
+(setq inhibit-startup-message t)
+
+;;PACKIDGES!!!
 (require 'package)
-(package-initialize)
 
 ;; Uncomment if package refresh below fails due to signatures and restart,
 ;; after that keyring update should allow it to be recommented
 ;;(setq package-check-signature nil)
+;;(setq package-check-signature "allow-unsigned")
+
+(if (not package-check-signature)
+    (message "Package signature check disabled")
+  )
+
+;; list the packages you want
+(setq package-list '(all-the-icons-ibuffer
+		     apache-mode
+		     bar-cursor
+		     bm
+		     boxquote
+		     browse-kill-ring
+		     cmake-mode
+		     csv-mode
+		     diminish
+		     eglot
+		     eproject
+		     fill-column-indicator
+		     flycheck-google-cpplint
+		     folding
+		     gnu-elpa-keyring-update
+		     google-c-style
+		     graphviz-dot-mode
+		     htmlize
+		     ibuffer-git
+		     ibuffer-tramp
+		     ibuffer-vc
+		     initsplit
+		     lua-mode
+		     markdown-mode
+		     markdown-preview-mode
+		     python-mode
+		     resize-window
+		     session
+		     tabbar
+		     visual-fill-column
+		     windresize
+		     yaml
+		     yaml-imenu
+		     yasnippet
+		     ztree)
+      )
 
 (setq package-archives
       '(("melpa" . "http://melpa.org/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")))
-(package-refresh-contents)
+        ("gnu" . "http://elpa.gnu.org/packages/")
+;;        ("marmalade" . "http://marmalade-repo.org/packages/")
+        )
+      )
 
-; Do without annoying startup msg.
-(setq inhibit-startup-message t)
+; activate all the packages (in particular autoloads)
+(package-initialize)
+
+; fetch the list of packages available 
+(unless package-archive-contents
+  (package-refresh-contents))
+
+; install the missing packages
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)
+    )
+  )
 
 ;; use y or n instead of yes or no
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -41,8 +107,11 @@
 
 ;; theme me
 (load-theme 'KDeT t)
-(set-face-attribute 'default nil :font "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1")
-(set-frame-font "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1" nil t)
+
+(when (member "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1" (font-family-list))
+  (set-face-attribute 'default nil :font "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1")
+  (set-frame-font "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1" nil t)
+  )
 
 (defconst font-lock-maximum-decoration t)
 (setq visible-bell 1)
@@ -119,7 +188,7 @@
 (require 'tramp)
 
 ;;M-k kills to the left
-(global-set-key "\M-k" '(lambda () (interactive) (kill-line 0)) )
+(global-set-key "\M-k" (lambda () (interactive) (kill-line 0)) )
 
 ;;Org-mode
 (setq-default org-agenda-files (quote ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org")))
@@ -217,21 +286,17 @@ This function is suitable to add to `find-file-hook'."
 
 (setq debug-on-error nil)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-<<<<<<< HEAD
-   (quote
-    (ztree visual-fill-column yasnippet lua-mode fill-column-indicator ibuffer-vc ibuffer-tramp ibuffer-git all-the-icons-ibuffer gnu-elpa-keyring-update eglot python-mode resize-window windresize google-c-style flycheck-google-cpplint cmake-mode yaml-imenu yaml tabbar session pod-mode muttrc-mode mutt-alias markdown-mode initsplit htmlize graphviz-dot-mode folding eproject diminish csv-mode browse-kill-ring boxquote bm bar-cursor apache-mode))))
-=======
-   '(markdown-preview-mode yasnippet lua-mode fill-column-indicator ibuffer-vc ibuffer-tramp ibuffer-git all-the-icons-ibuffer gnu-elpa-keyring-update eglot python-mode resize-window windresize google-c-style flycheck-google-cpplint cmake-mode yaml-imenu yaml tabbar session pod-mode muttrc-mode mutt-alias markdown-mode initsplit htmlize graphviz-dot-mode folding eproject diminish csv-mode browse-kill-ring boxquote bm bar-cursor apache-mode)))
->>>>>>> c62475c (updated for new home setup, fixed typo in init.el)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(ztree yasnippet yaml-imenu yaml windresize visual-fill-column tabbar session resize-window python-mode markdown-preview-mode lua-mode initsplit ibuffer-vc ibuffer-tramp ibuffer-git htmlize graphviz-dot-mode google-c-style gnu-elpa-keyring-update folding flycheck-google-cpplint fill-column-indicator eproject diminish csv-mode cmake-mode browse-kill-ring boxquote bm bar-cursor apache-mode all-the-icons-ibuffer)))
