@@ -1,0 +1,25 @@
+
+[[https://status.gtri.gatech.edu/][GTRI System Status]]
+
+[[https://gitlab.gtri.gatech.edu/gtri-uav/gtri-uav-documentation/-/tree/d540fab5d8c55dd8adc3864fe07c481d87a54a21/Developer_Documentation/Developement_Policies][Google C++ Style Guide]]
+[[https://www.wireshark.org/docs/wsug_html_chunked/index.html][Wireshark User’s Guide]]
+[[https://www.lua.org/manual/5.4/manual.html#pdf-package.path][Lua 5.4 Reference Manual]]
+[[https://www.lua.org/docs.html][Lua]]
+** Emacs
+[[https://joaotavora.github.io/eglot/][Eglot]]
+
+[[https://docs.docker.com/reference/][DockerDocs]]
+
+[[https://mavlink.io/en/][MavLink]]
+
+[[https://clangd.llvm.org/][Clangd]]
+
+[[https://www.wireshark.org/docs/wsdg_html_chunked/wsluarm_modules.html#lua_module_Utility][Wireshark Lua API]]
+[[https://cmake.org/cmake/help/latest/index.html][Cmake]]
+[[https://ardupilot.org/dev/docs/mavlink-commands.html#][mavlink Interface]]
+
+[[https://x.cygwin.com/docs/ug/cygwin-x-ug.html][Cygwin-X]]
+[[https://orgmode.org/manual/index.html][Org Mode]]
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/index.html][emacs]]
+[[https://sourceforge.net/p/cppcheck/wiki/Home/][cppcheck]]
+https://cppcheck.sourceforge.io/manual.pdf
