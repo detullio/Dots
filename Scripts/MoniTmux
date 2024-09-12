@@ -1,0 +1,16 @@
+#!/bin/bash
+# var for session name (to avoid repeated occurences)
+sessionName=monitor
+tmux set-option -g default-command "/bin/bash"
+
+# Start the session and window 0 in /etc
+#   This will also be the default cwd for new windows created
+#   via a binding unless overridden with default-path.
+tmux new-session -s "$sessionName" -n "$sessionName" -d  'docker stats'
+
+# Select window #1 and attach to the session
+tmux select-window -t "$sessionName:1"
+tmux split-window -v 'htop'
+tmux split-window -v 'bmon'
+tmux split-window -h '~/Downloads/mini-soi'
+tmux -2 attach-session -t "$sessionName"
