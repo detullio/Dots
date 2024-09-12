@@ -6,10 +6,14 @@
 
 ;;(setq package-check-signature nil)
 
+(if !package-check-signature
+    (message "Package signature check disabled")
+  )
+
 (setq package-archives
       '(("melpa" . "http://melpa.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")))
-;;(package-refresh-contents)
+(package-refresh-contents)
 
 ; Do without annoying startup msg.
 (setq inhibit-startup-message t)

@@ -1,0 +1,43 @@
+# -*- mode: snippet -*-
+# name: HppFile
+# key: HppFile
+# --
+/**
+*****************************************************************************
+* @section LICENSE
+*  ----------------------------------------------------------------------------
+*    ----------------------------- UNCLASSIFIED -----------------------------
+*  ----------------------------------------------------------------------------
+*
+*  Copyright 2024, Georgia Tech Research Corporation, Atlanta, Georgia 30332
+*
+*  LICENSE TO COPY: This material may be reproduced by or for the U.S. Government
+*  pursuant to the copyright license under the clauses at DFARS 252.227-7013 and
+*  252.227-7014.
+*
+*  DISTRIBUTION STATEMENT D: Distribution authorized to the Department of Defense
+*  and U.S. DoD contractors only (Critical Technical Data, April 28, 2014).
+*
+*  WARNING: This document contains technical data whose export is restricted by
+*  the Arms Export Control Act (Title 22, U.S.C., Sec 2751, et seq.) or the
+*  Export Administration Act of 1979, as amended (Title 50, U.S.C., App. 2401 et
+*  seq.). Violations of these export laws are subject to severe criminal
+*  penalties. Disseminate in accordance with provisions of DoD Directive 5230.25.
+*
+*  HANDLING AND DESTRUCTION NOTICE: Comply with the distribution statement and
+*  destroy this document by any method that will prevent disclosure or
+*  reconstruction of this documents contents.
+*  ----------------------------------------------------------------------------
+*****************************************************************************
+*/
+
+#ifndef ${1:_`(upcase (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))`_HPP_}
+#define $1
+
+namespace $2 {
+
+$0
+
+} //close namespace $2
+
+#endif /* $1 */

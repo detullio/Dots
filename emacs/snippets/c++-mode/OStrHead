@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: OStrHead
+# key: OStrHead
+# --
+
+std::ostream& operator<<(
+    std::ostream& stream,
+    const $1& $2);
+
+size_t pack(
+    char** returnBuffer,
+    const $1& $2);
+
+void unpack(
+    $1& $2,
+    const char* inputBuffer);
