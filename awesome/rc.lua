@@ -71,7 +71,7 @@ awful.layout.layouts = {
 --    awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
-    --awful.layout.suit.corner.nw,
+    awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
@@ -238,6 +238,20 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+   
+   awful.key {
+        modifiers   = { modkey },
+        keygroup    = "numpad",
+        description = "only view tag",
+        group       = "tag",
+        on_press    = function (index)
+            local screen = awful.screen.focused()
+            local tag = screen.tags[index]
+            if tag then
+                tag:view_only()
+            end
+        end,
+    },
 
    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
       {description="show help", group="awesome"}),
@@ -564,6 +578,9 @@ if autorun then
        awful.util.spawn(autorunApps[app])
    end
 end
+
+awful.util.spawn_with_shell("xscreensaver -no-splash")
+
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
