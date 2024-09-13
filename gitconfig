@@ -13,6 +13,7 @@ email = kenneth.detullio@gtri.gatech.edu
 
 [core]
 excludesFile = ~/.gitignore
+	editor = emacs -nw -q
 
 [color]
 ui = auto
