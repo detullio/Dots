@@ -53,7 +53,6 @@
 		     session
 		     tabbar
 		     visual-fill-column
-		     windresize
 		     yaml
 		     yaml-imenu
 		     yasnippet
@@ -298,4 +297,4 @@ This function is suitable to add to `find-file-hook'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ztree yasnippet yaml-imenu yaml windresize visual-fill-column tabbar session resize-window python-mode markdown-preview-mode lua-mode initsplit ibuffer-vc ibuffer-tramp ibuffer-git htmlize graphviz-dot-mode google-c-style gnu-elpa-keyring-update folding flycheck-google-cpplint fill-column-indicator eproject diminish csv-mode cmake-mode browse-kill-ring boxquote bm bar-cursor apache-mode all-the-icons-ibuffer)))
+   '(ztree yasnippet yaml-imenu yaml visual-fill-column tabbar session resize-window python-mode markdown-preview-mode lua-mode initsplit ibuffer-vc ibuffer-tramp ibuffer-git htmlize graphviz-dot-mode google-c-style gnu-elpa-keyring-update folding flycheck-google-cpplint fill-column-indicator eproject diminish csv-mode cmake-mode browse-kill-ring boxquote bm bar-cursor apache-mode all-the-icons-ibuffer)))
