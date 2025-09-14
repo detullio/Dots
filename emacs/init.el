@@ -1,4 +1,4 @@
-;;Turn on debug for load of init.el
+;;Turn on debug for load of init.el  -*- lexical-binding: t; -*-
 (setq debug-on-error t)
 
 (with-current-buffer (messages-buffer)
@@ -13,51 +13,6 @@
 
 ;;PACKIDGES!!!
 (require 'package)
-
-;; Uncomment if package refresh below fails due to signatures and restart,
-;; after that keyring update should allow it to be recommented
-;;(setq package-check-signature nil)
-
-(if (not package-check-signature)
-    (message "Package signature check disabled")
-  )
-
-;; list the packages you want
-(setq package-list '(all-the-icons-ibuffer apache-mode bar-cursor bm boxquote
-                       browse-kill-ring cmake-mode cmake-project
-                       csv-mode diminish dired-filetype-face diredc
-                       dirtree dirvish ede-compdb eglot eproject
-                       fill-column-indicator flycheck-google-cpplint
-                       folding gnu-elpa-keyring-update google-c-style
-                       graphviz-dot-mode gtags-mode helm-ls-git
-                       htmlize ibuffer-git ibuffer-project
-                       ibuffer-tramp ibuffer-vc initsplit lua-mode
-                       magit markdown-preview-mode org-modern
-                       python-mode resize-window session tabbar
-                       visual-fill-column yaml yaml-imenu yasnippet
-                       ztree)
-      )
-
-(setq package-archives
-      '(("melpa" . "http://melpa.org/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")
-;;        ("marmalade" . "http://marmalade-repo.org/packages/")
-        )
-      )
-
-; activate all the packages (in particular autoloads)
-(package-initialize)
-
-; fetch the list of packages available 
-(unless package-archive-contents
-  (package-refresh-contents))
-
-; install the missing packages
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)
-    )
-  )
 
 ;; use y or n instead of yes or no
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -81,9 +36,6 @@
 (setq split-width-threshold nil)
 (setq-default truncate-lines t)
 
-(setq global-font-lock-mode t)
-(defconst font-lock-maximum-decoration 4)
-
 ;; theme me
 (load-theme 'KDeT t)
 
@@ -92,6 +44,8 @@
   (set-frame-font "-GOOG-Noto Sans Mono-normal-normal-normal-*-12-*-*-*-*-0-iso10646-1" nil t)
   )
 
+(setq global-font-lock-mode t)
+(defconst font-lock-maximum-decoration 4)
 
 (setq visible-bell 1)
 
@@ -263,17 +217,3 @@ This function is suitable to add to `find-file-hook'."
 
 (setq debug-on-error nil)
 
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ztree yasnippet yaml-imenu yaml visual-fill-column tabbar session resize-window python-mode markdown-preview-mode lua-mode initsplit ibuffer-vc ibuffer-tramp ibuffer-git htmlize graphviz-dot-mode google-c-style gnu-elpa-keyring-update folding flycheck-google-cpplint fill-column-indicator eproject diminish csv-mode cmake-mode browse-kill-ring boxquote bm bar-cursor apache-mode all-the-icons-ibuffer)))

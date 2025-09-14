@@ -13,7 +13,7 @@ email = detullio@gmail.com
 
 [core]
 excludesFile = ~/.gitignore
-	editor = emacs -nw -q
+editor = emacs -nw -q
 
 [color]
 ui = auto
@@ -40,8 +40,8 @@ submodulesummary = 1
 [diff]
 tool = bc
 
-
 [merge]
 tool = bc
+
 [init]
 defaultBranch = unstable

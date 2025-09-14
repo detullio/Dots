@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (deftheme KDeT
   "Created 2019-11-23.")
 

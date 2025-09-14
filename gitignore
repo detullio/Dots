@@ -1,8 +1,9 @@
 # git config --global core.excludesFile '~/.gitignore'
 .emacs.desktop
-emacs/projects
 *.orig
 .emacs.desktop.lock
 .clangd/
 TAGS
 compile_commands.json
+*.backup
+\#*#

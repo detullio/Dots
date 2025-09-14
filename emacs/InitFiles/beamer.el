@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 ;; ;; ;; allow for export=>beamer by placing
 

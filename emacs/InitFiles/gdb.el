@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;debugging
 (setq gdb-many-windows nil)
 (setq gdb-same-frame nil)

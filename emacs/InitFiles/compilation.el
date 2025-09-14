@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 ;;Wrap compilation windows
 (defun my-compilation-mode-hook ()
@@ -6,6 +7,7 @@
 (add-hook 'compilation-mode-hook 'my-compilation-mode-hook)
 
 (add-hook 'compilation-mode-hook (lambda () (text-scale-increase 2)))
+(add-hook 'compilation-mode-hook (lambda () (setq truncate-lines t))) ;;truncation enabled
 
 ;;other compilation stuff
 (setq comint-scroll-to-bottom-on-input (quote this))
@@ -15,8 +17,8 @@
 (setq compilation-skip-threshold 2)
 (setq compilation-skip-visited t)
 (setq compilation-window-height 20)
-;;(setq compile-command "scons ")
 
+;;(setq compile-command "scons ")
 (setq compile-command "cmake --build ~/working/building/")
 
 ;;SCons file font-lock

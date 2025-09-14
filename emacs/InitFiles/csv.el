@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 ;; ses-csv.el -- Read/Write CSV file for SES
 ;; Author: Takashi Hattori (hattori@sfc.keio.ac.jp)

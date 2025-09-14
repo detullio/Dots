@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 (setq fortran-blink-matching-if t)
 (setq fortran-check-all-num-for-matching-do t)
