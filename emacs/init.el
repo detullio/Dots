@@ -48,7 +48,6 @@
 (defconst font-lock-maximum-decoration 4)
 
 (setq visible-bell 1)
-
 (setq column-number-mode t)
 
 ;; Always end a file with a newline
@@ -122,7 +121,7 @@
 (global-set-key "\M-k" (lambda () (interactive) (kill-line 0)) )
 
 ;;Org-mode
-(setq-default org-agenda-files (quote ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org")))
+(setq-default org-agenda-files (quote ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org" "~/OrgFiles/Journal/2025/")))
 
 (setq-default org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
 
@@ -209,8 +208,20 @@ This function is suitable to add to `find-file-hook'."
 (setq completion-ignored-extensions
       '(".obj" ".xpt" ".a" ".so" ".o" ".d" ".elc" ".class" "~" ".ckp" ".bak" ".imp" ".lpt" ".bin" ".otl" ".err" ".lib" ".x9700" ".aux" ))
 
-(desktop-save-mode 1)
 (setq desktop-path '("."))
+(setq desktop-restore-eager 5)
+(setq desktop-auto-save-timeout 5))
+
+(if (not (daemonp))
+    (desktop-save-mode 1)
+  (defun restore-desktop (frame)
+    "Restores desktop and cancels hook after first frame opens.
+     So the daemon can run at startup and it'll still work"
+    (with-selected-frame frame
+      (desktop-save-mode 1)
+      (desktop-read)
+      (remove-hook 'after-make-frame-functions 'restore-desktop)))
+  (add-hook 'after-make-frame-functions 'restore-desktop))
 
 ;;long lines during commit messages
 (add-to-list 'auto-mode-alist '("/bzr_log\\." . longlines-mode))
