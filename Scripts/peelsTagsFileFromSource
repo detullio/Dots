@@ -1,0 +1,1 @@
+find ./ \( -path ./applications/Tests -prune -o -path ./applications/mod_g -prune -o -path ./applications/SSHOT -prune -o -regex ".*\.f90" -o -regex ".+\.[ch]pp$" -o -regex ".+\.[ch]$" \) -exec etags -a {} \;

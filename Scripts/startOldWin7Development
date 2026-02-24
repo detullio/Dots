@@ -1,0 +1,1 @@
+kvm -m 1.5G -cpu host -usb -enable-kvm -vga std -drive file=~/Virtual\ Machines/Windows7Development.qcow2,cache=writeback,media=disk

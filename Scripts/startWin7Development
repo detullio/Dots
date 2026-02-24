@@ -1,0 +1,1 @@
+kvm -m 1.5G -usbdevice mouse -cpu host -usb -enable-kvm -vga std Windows7UltimateN64-clone.qcow2

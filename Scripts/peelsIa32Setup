@@ -1,0 +1,8 @@
+source /opt/intel/bin/compilervars.sh ia32
+source /opt/intel/bin/ifortvars.sh ia32
+
+source /opt/intel/vtune_amplifier_xe_2011/amplxe-vars.sh
+
+export BRL_ROOT=/home/likewise-open/PEOPLETEC/kenny.detullio/working/BRL-CAD/usr/brlcad/
+export BOOST_ROOT=~/working/boost-trunk
+export TCL_LIBS=/home/likewise-open/PEOPLETEC/kenny.detullio/working/ActiveTcl8.5.10.1.295062-linux-ix86-threaded/payload/lib

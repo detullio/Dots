@@ -1,0 +1,32 @@
+#!/bin/bash
+# created 9/13/16
+# a script that uses feh to switch to a random wallpaper
+
+# directory where wallpapers are stored
+dir="$HOME/Pictures/Pron"
+
+# grab # of files in directory
+total=$(ls $dir | wc -l)
+
+# use $RANDOM to find a wallpaper to display 
+num="$(($RANDOM%$total))"
+
+# incrementer
+k=0
+
+# look through directory for all wallpapers
+for i in "$dir"/*; do
+
+    # create an array from files in directory
+    wps[$k]="$i"
+    #printf "${wps[$k]}\n"
+
+    # increment!
+    k=$((k+1))
+
+done
+
+#printf "${wps[0]} $total $num\n"
+
+# call feh with array and key value
+feh -D 10 --bg-max "${wps[$num]}"
