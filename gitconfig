@@ -35,7 +35,11 @@ changed = white bold
 untracked = white
 
 [status]
-submodulesummary = 1
+submodulesummary = true # more submodule information during status
+
+[submodule]
+recurse = true # automatically recurse submodules for most commands (not clone, ls-files, or branch)
+
 
 [diff]
 tool = bc
