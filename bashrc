@@ -16,8 +16,7 @@ export HISTCONTROL=ignoreboth:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
-#enter history on command line, but do not execute
-shopt -s histverify
+shopt -s histverify #enter history on command line, but do not execute
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 export HISTSIZE=10000
