@@ -12,7 +12,7 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-export HISTCONTROL=ignoreboth:erasedups
+# export HISTCONTROL=ignoreboth:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -148,3 +148,120 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 source /home/kmdetullio/working/developing/ardupilot/ardupilot/Tools/completion/completion.bash
+
+# =============================================================================
+# Advanced History Management: Deduplicate, merge, and synchronize history
+# from multiple shell sessions while maintaining command order
+# =============================================================================
+
+# Function to deduplicate history while preserving order (most recent first)
+_deduplicate_history() {
+    local histfile="$1"
+    if [ ! -f "$histfile" ]; then
+        return
+    fi
+    
+    # Use awk to keep only the first occurrence of each line (most recent)
+    # -F'\n' sets newline as field separator to process each line individually
+    awk -F'\n' '!seen[$0]++' "$histfile" > "${histfile}.tmp" && mv "${histfile}.tmp" "$histfile"
+}
+
+# Function to merge history from all bash sessions
+_merge_history() {
+    local histfile="$HISTFILE"
+    local histtemp="${histfile}.merge.$$"
+    
+    # Use flock for atomic file locking to prevent race conditions
+    (
+        flock -n 9 || exit 0
+        
+        # Collect unique lines from current history file
+        if [ -f "$histfile" ]; then
+            cat "$histfile"
+        fi
+        
+        # Also read from history command to get current session's history
+        history -p | while read -r line; do
+            [ -n "$line" ] && echo "$line"
+        done
+        
+    ) 9>"${histfile}.lock" > "$histtemp"
+    
+    if [ -f "$histtemp" ]; then
+        # Atomic replace with locking
+        (
+            flock -n 9 || exit 0
+            # Deduplicate while preserving order (most recent entries kept)
+            awk -F'\n' '!seen[$0]++' "$histtemp" > "$histfile"
+            rm -f "$histtemp"
+        ) 9>"${histfile}.lock"
+    fi
+}
+
+# Pre-command hook to sync history before each command
+_sync_history_on_exec() {
+    # Only sync if the history file exists and has content
+    if [ -f "$HISTFILE" ] && [ -s "$HISTFILE" ]; then
+        _merge_history
+    fi
+}
+
+# Post-command hook to sync history after each command
+_sync_history_after_exec() {
+    # Force write current session history to file
+    history -a
+    
+    # Merge and deduplicate
+    if [ -f "$HISTFILE" ]; then
+        _merge_history
+    fi
+}
+
+# Set up the history sync hooks
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_sync_history_after_exec"
+
+# Also sync before command execution to catch history from other sessions
+# Use DEBUG trap as a lightweight alternative to PROMPT_COMMAND for pre-command sync
+# Only enable if not already set to avoid overhead
+if [[ -z "$BASH_HISTORY_SYNC_DEBUG" ]]; then
+    export BASH_HISTORY_SYNC_DEBUG=1
+    trap '_sync_history_on_exec' DEBUG
+fi
+
+# Periodic background history sync (every 50 commands or on significant events)
+_history_periodic_sync() {
+    local count="${BASH_HISTORY_SYNC_COUNT:-0}"
+    ((count++))
+    export BASH_HISTORY_SYNC_COUNT=$count
+    
+    # Sync every 50 commands to catch history from crashed/closed sessions
+    if [ $((count % 50)) -eq 0 ]; then
+        _merge_history
+    fi
+}
+
+# Add periodic sync to prompt command
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_history_periodic_sync"
+
+# Function to manually trigger a full history sync and deduplication
+hist-sync() {
+    echo "Syncing and deduplicating history..."
+    _merge_history
+    _deduplicate_history "$HISTFILE"
+    history -r
+    echo "History sync complete. Total entries: $(wc -l < "$HISTFILE")"
+}
+
+# Function to show history statistics
+hist-stats() {
+    if [ -f "$HISTFILE" ]; then
+        echo "History file: $HISTFILE"
+        echo "Total entries: $(wc -l < "$HISTFILE")"
+        echo "Unique entries: $(sort -u "$HISTFILE" | wc -l)"
+        echo "File size: $(du -h "$HISTFILE" | cut -f1)"
+    fi
+}
+
+# Aliases for history management
+alias hsync='hist-sync'
+alias hstats='hist-stats'
