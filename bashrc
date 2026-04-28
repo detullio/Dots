@@ -154,48 +154,69 @@ source /home/kmdetullio/working/developing/ardupilot/ardupilot/Tools/completion/
 # from multiple shell sessions while maintaining command order
 # =============================================================================
 
-# Function to deduplicate history while preserving order (most recent first)
+# History lock file path (stored in tmpfs for performance)
+_HIST_LOCK_FILE="${HISTFILE}.lock"
+
+# Function to cleanup stale lock files
+_cleanup_stale_locks() {
+    local lockfile="$1"
+    # Remove lock file if it's older than 1 hour (stale from crashed process)
+    if [ -f "$lockfile" ]; then
+        local age=$(($(date +%s) - $(stat -c %Y "$lockfile" 2>/dev/null || echo 0)))
+        if [ "$age" -gt 3600 ]; then
+            rm -f "$lockfile"
+        fi
+    fi
+}
+
+# Function to deduplicate history keeping MOST RECENT occurrence
 _deduplicate_history() {
     local histfile="$1"
-    if [ ! -f "$histfile" ]; then
+    if [ ! -f "$histfile" ] || [ ! -s "$histfile" ]; then
         return
     fi
     
-    # Use awk to keep only the first occurrence of each line (most recent)
-    # -F'\n' sets newline as field separator to process each line individually
-    awk -F'\n' '!seen[$0]++' "$histfile" > "${histfile}.tmp" && mv "${histfile}.tmp" "$histfile"
+    # Use tac to reverse, deduplicate, then reverse back to keep MOST RECENT
+    local tmpfile="${histfile}.dedup.tmp"
+    tac "$histfile" | awk -F'\n' '!seen[$0]++' | tac > "$tmpfile" && mv "$tmpfile" "$histfile"
 }
 
-# Function to merge history from all bash sessions
+# Function to merge history from all bash sessions with proper locking
 _merge_history() {
     local histfile="$HISTFILE"
-    local histtemp="${histfile}.merge.$$"
+    local lockfile="$_HIST_LOCK_FILE"
     
-    # Use flock for atomic file locking to prevent race conditions
-    (
-        flock -n 9 || exit 0
+    # Cleanup any stale locks first
+    _cleanup_stale_locks "$lockfile"
+    
+    # Use a single lock with blocking wait, not non-blocking
+    {
+        # Acquire exclusive lock (blocking until available)
+        flock -x 9
         
-        # Collect unique lines from current history file
+        # Read current history file
+        local current_lines=""
         if [ -f "$histfile" ]; then
-            cat "$histfile"
+            current_lines=$(cat "$histfile")
         fi
         
-        # Also read from history command to get current session's history
-        history -p | while read -r line; do
-            [ -n "$line" ] && echo "$line"
-        done
+        # Get this session's history (non-persistent commands)
+        local session_lines
+        session_lines=$(history -p 2>/dev/null | grep -v '^$' | tr '\n' '\x00' | xargs -0 -n1 echo | tail -n 50)
         
-    ) 9>"${histfile}.lock" > "$histtemp"
-    
-    if [ -f "$histtemp" ]; then
-        # Atomic replace with locking
-        (
-            flock -n 9 || exit 0
-            # Deduplicate while preserving order (most recent entries kept)
-            awk -F'\n' '!seen[$0]++' "$histtemp" > "$histfile"
-            rm -f "$histtemp"
-        ) 9>"${histfile}.lock"
-    fi
+        # Combine and deduplicate (keeping most recent)
+        {
+            echo "$current_lines"
+            echo "$session_lines"
+        } | tac | awk -F'\n' '!seen[$0]++' | tac > "${histfile}.new"
+        
+        # Atomic replace
+        if [ -f "${histfile}.new" ]; then
+            mv "${histfile}.new" "$histfile"
+        fi
+        
+        # Release lock implicitly when block exits
+    } 9>"$lockfile"
 }
 
 # Pre-command hook to sync history before each command
@@ -228,20 +249,29 @@ if [[ -z "$BASH_HISTORY_SYNC_DEBUG" ]]; then
     trap '_sync_history_on_exec' DEBUG
 fi
 
-# Periodic background history sync (every 50 commands or on significant events)
+# Periodic background history sync (every 10 commands for more frequent updates)
 _history_periodic_sync() {
     local count="${BASH_HISTORY_SYNC_COUNT:-0}"
     ((count++))
     export BASH_HISTORY_SYNC_COUNT=$count
     
-    # Sync every 50 commands to catch history from crashed/closed sessions
-    if [ $((count % 50)) -eq 0 ]; then
+    # Sync every 10 commands to catch history from other sessions
+    if [ $((count % 10)) -eq 0 ]; then
         _merge_history
     fi
 }
 
 # Add periodic sync to prompt command
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_history_periodic_sync"
+
+# Cleanup lock file on shell exit to prevent stale locks
+_cleanup_history_on_exit() {
+    local lockfile="$_HIST_LOCK_FILE"
+    # Only remove if we created it and it's stale
+    if [ -f "$lockfile" ]; then
+        rm -f "$lockfile" 2>/dev/null
+    fi
+}
 
 # Function to manually trigger a full history sync and deduplication
 hist-sync() {
@@ -257,7 +287,7 @@ hist-stats() {
     if [ -f "$HISTFILE" ]; then
         echo "History file: $HISTFILE"
         echo "Total entries: $(wc -l < "$HISTFILE")"
-        echo "Unique entries: $(sort -u "$HISTFILE" | wc -l)"
+        echo "Unique entries: $(tac "$HISTFILE" | awk -F'\n' '!seen[$0]++' | tac | wc -l)"
         echo "File size: $(du -h "$HISTFILE" | cut -f1)"
     fi
 }
