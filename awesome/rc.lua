@@ -44,6 +44,7 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
 beautiful.font = "Hack 7"
+beautiful.notification_icon_size = 20
 
 -- This is used later as the default terminal and editor to run.
 terminal = "gnome-terminal"

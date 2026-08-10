@@ -121,7 +121,32 @@
 (global-set-key "\M-k" (lambda () (interactive) (kill-line 0)) )
 
 ;;Org-mode
-(setq-default org-agenda-files (quote ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org" "~/OrgFiles/Journal/2025/")))
+(setq-default org-agenda-files ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org" "~/OrgFiles/Journal/"))
+;; Minimal UI
+;;(package-initialize)
+;;(menu-bar-mode -1)
+;;(tool-bar-mode -1)
+;;(scroll-bar-mode -1)
+;;(modus-themes-load-operandi)
+(add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
+(add-hook 'org-agenda-mode-hook (lambda () (setq-local truncate-lines nil)))
+(add-hook 'diary-mode-hook (lambda () (setq-local truncate-lines nil)))
+
+(setq
+ ;; Edit settings
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ org-insert-heading-respect-content t
+
+ ;; Org styling, hide markup etc.
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-agenda-tags-column 0
+ org-ellipsis "…")
+
+(global-org-modern-mode)
 
 (setq-default org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
 
