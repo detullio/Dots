@@ -1,0 +1,14 @@
+[Unit]
+Description=Emacs daemon (system)
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=notify
+WorkingDirectory=%h
+ExecStart=/usr/local/bin/emacs --fg-daemon=system
+ExecStop=/usr/local/bin/emacsclient --socket-name=system --eval "(kill-emacs)"
+Restart=on-failure
+SuccessExitStatus=15
+
+[Install]
+WantedBy=default.target

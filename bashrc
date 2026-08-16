@@ -101,6 +101,26 @@ alias l='ls -lFhX'
 
 alias qmacs='emacs -nw -q'
 
+# Connect to OrgHell daemon (GUI if display available, else terminal)
+eorg() {
+    if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+        emacsclient -s OrgHell -c -n "$@"
+    else
+        emacsclient -s OrgHell -nw "$@"
+    fi
+}
+
+# Connect to system daemon (GUI if display available, else terminal)
+esys() {
+    if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+        emacsclient -s system -c -n "$@"
+    else
+        emacsclient -s system -nw "$@"
+    fi
+}
+alias emacs-org='eorg'
+alias emacs-sys='esys'
+
 alias ghis='history|grep'
 alias whis='history -w'
 alias rhis='history -r'

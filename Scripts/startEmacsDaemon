@@ -1,2 +1,12 @@
 #!/bin/bash
-~/working/emacs/emacs/src/emacs --daemon
+# Start or manage both Emacs daemons (OrgHell and system) via systemd user services
+
+if command -v systemctl >/dev/null 2>&1 && systemctl --user list-units >/dev/null 2>&1; then
+    echo "Starting/enabling Emacs daemons (OrgHell and system) via systemd --user..."
+    systemctl --user start emacs-OrgHell.service emacs-system.service
+    systemctl --user status emacs-OrgHell.service emacs-system.service --no-pager
+else
+    echo "Starting Emacs daemons directly..."
+    emacs --daemon=OrgHell --chdir "$HOME/working/documenting/OrgFiles"
+    emacs --daemon=system --chdir "$HOME"
+fi

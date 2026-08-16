@@ -121,7 +121,7 @@
 (global-set-key "\M-k" (lambda () (interactive) (kill-line 0)) )
 
 ;;Org-mode
-(setq-default org-agenda-files ("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org" "~/OrgFiles/Journal/"))
+(setq-default org-agenda-files '("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org" "~/OrgFiles/Journal/"))
 ;; Minimal UI
 ;;(package-initialize)
 ;;(menu-bar-mode -1)
@@ -235,7 +235,7 @@ This function is suitable to add to `find-file-hook'."
 
 (setq desktop-path '("."))
 (setq desktop-restore-eager 5)
-(setq desktop-auto-save-timeout 5))
+(setq desktop-auto-save-timeout 5)
 
 (if (not (daemonp))
     (desktop-save-mode 1)
