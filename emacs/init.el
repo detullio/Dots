@@ -146,7 +146,8 @@
  org-agenda-tags-column 0
  org-ellipsis "…")
 
-(global-org-modern-mode)
+(add-hook 'org-mode-hook #'org-modern-mode)
+(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
 
 (setq-default org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
 
