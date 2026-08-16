@@ -120,8 +120,10 @@
 ;;M-k kills to the left
 (global-set-key "\M-k" (lambda () (interactive) (kill-line 0)) )
 
-;;Org-mode
-(setq-default org-agenda-files '("~/OrgFiles/Projects/ProScuzNetwork.org" "~/OrgFiles/RandomResearch.org" "~/OrgFiles/todo.org" "~/OrgFiles/Journal/"))
+;;Org-mode & Diary
+(setq diary-file "~/working/documenting/OrgFiles/Journal/diary")
+(setq org-agenda-include-diary t)
+(setq-default org-agenda-files '("~/OrgFiles/"))
 ;; Minimal UI
 ;;(package-initialize)
 ;;(menu-bar-mode -1)

@@ -22,6 +22,8 @@ emacs/transient
 emacs/auto-save-list/
 emacs/elpa/
 emacs/tramp
+emacs/diary
+diary
 # Org-mode
 .org-id-locations
 *_archive
