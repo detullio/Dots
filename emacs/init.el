@@ -1,4 +1,5 @@
-;;Turn on debug for load of init.el  -*- lexical-binding: t; -*-
+;; -*- lexical-binding: t; -*-
+;Turn on debug for load of init.el
 (setq debug-on-error t)
 
 (with-current-buffer (messages-buffer)
@@ -59,11 +60,11 @@
 ;;Dired
 (setq dired-listing-switches "-hlAX")
 
-(setq-default develock-max-column-plist (quote
-                                         (emacs-lisp-mode w lisp-interaction-mode w change-log-mode w texinfo-mode
-                                                          w c-mode w c++-mode w java-mode w jde-mode w html-mode
-                                                          w html-helper-mode w cperl-mode w perl-mode w mail-mode
-                                                          t message-mode t cmail-mail-mode t tcl-mode 79 ruby-mode 79)))
+(setq-default develock-max-column-plist
+              (quote (emacs-lisp-mode w lisp-interaction-mode w change-log-mode w texinfo-mode
+                                      w c-mode w c++-mode w java-mode w jde-mode w html-mode
+                                      w html-helper-mode w cperl-mode w perl-mode w mail-mode
+                                      t message-mode t cmail-mail-mode t tcl-mode 79 ruby-mode 79)))
 
 ;;reuse frame if buffer open
 (setq-default display-buffer-reuse-frames t)
@@ -164,6 +165,7 @@
 (load "lua")
 (load "packages")
 (load "python")
+(load "Ollama")
 
 ;; ansi color??
 (when (require 'ansi-color nil t)
@@ -225,8 +227,12 @@ This function is suitable to add to `find-file-hook'."
 ;; Automatically uncompress .gz files
 (auto-compression-mode)
 
-(setq backup-directory-alist `(("." . "~/.emacsBak")))
+(setq backup-directory-alist `(("." . "~/.cache/emacs/backup")))
 (setq backup-by-copying-when-linked t)
+
+;; Configure autosave files to be stored in custom directory
+(setq auto-save-file-name-transforms 
+      `((".*" ,(expand-file-name "~/.cache/emacs/autosave") t)))
 
 (setq delete-old-versions t
   kept-new-versions 6
@@ -251,8 +257,33 @@ This function is suitable to add to `find-file-hook'."
       (remove-hook 'after-make-frame-functions 'restore-desktop)))
   (add-hook 'after-make-frame-functions 'restore-desktop))
 
-;;long lines during commit messages
-(add-to-list 'auto-mode-alist '("/bzr_log\\." . longlines-mode))
-
 (setq debug-on-error nil)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(all-the-icons-ibuffer apache-mode bar-cursor bm boxquote
+                           browse-kill-ring chatgpt-shell cmake-mode
+                           cmake-project csv-mode diminish
+                           dired-filetype-face diredc dirtree dirvish
+                           ede-compdb eglot eproject
+                           fill-column-indicator
+                           flycheck-google-cpplint folding
+                           gnu-elpa-keyring-update google-c-style
+                           graphviz-dot-mode gtags-mode helm-ls-git
+                           htmlize ibuffer-git ibuffer-project
+                           ibuffer-tramp ibuffer-vc initsplit lua-mode
+                           magit markdown-preview-mode ollama-buddy
+                           org-modern python-mode resize-window
+                           session tabbar use-package
+                           visual-fill-column yaml yaml-imenu
+                           yasnippet ztree)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
