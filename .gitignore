@@ -6,3 +6,11 @@ emacs/elpa/
 emacs/tramp
 emacs/diary
 diary
+
+# Ollama Buddy
+ollama-buddy-presets/
+ollama-buddy-sessions/
+ollama-buddy-user-prompts/
+
+# ChatGPT Shell
+.chatgpt-shell.el
