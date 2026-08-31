@@ -19,3 +19,6 @@
 (setq c-mode-hook nil)
 (setq c-report-syntactic-errors t)
 (setq c-echo-syntactic-information-p t)
+
+(defalias 'SourceClean (read-kbd-macro
+                        "<C-home> C-SPC <C-end> M-x untabify TAB RET <C-home> M-x repl TAB rege TAB RET 2*SPC * RET SPC RET <C-home> C-SPC <C-end> M-x inden TAB - reg TAB RET"))
