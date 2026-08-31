@@ -23,6 +23,15 @@
 (tool-bar-mode 0)
 (scroll-bar-mode -1)
 
+
+;; Minimal UI
+;;(package-initialize)
+;;(menu-bar-mode -1)
+;;(tool-bar-mode -1)
+;;(scroll-bar-mode -1)
+;;(modus-themes-load-operandi)
+
+
 (transient-mark-mode 0)
 
 (setq cursor-type 'box)
@@ -68,6 +77,7 @@
 
 ;;reuse frame if buffer open
 (setq-default display-buffer-reuse-frames t)
+(setq tramp-verbose 6)
 
 ;;setup tramp for sudo
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
@@ -121,39 +131,6 @@
 ;;M-k kills to the left
 (global-set-key "\M-k" (lambda () (interactive) (kill-line 0)) )
 
-;;Org-mode & Diary
-(setq diary-file "~/working/documenting/OrgFiles/Journal/diary")
-(setq org-agenda-include-diary t)
-(setq-default org-agenda-files '("~/OrgFiles/"))
-;; Minimal UI
-;;(package-initialize)
-;;(menu-bar-mode -1)
-;;(tool-bar-mode -1)
-;;(scroll-bar-mode -1)
-;;(modus-themes-load-operandi)
-(add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
-(add-hook 'org-agenda-mode-hook (lambda () (setq-local truncate-lines nil)))
-(add-hook 'diary-mode-hook (lambda () (setq-local truncate-lines nil)))
-
-(setq
- ;; Edit settings
- org-auto-align-tags nil
- org-tags-column 0
- org-catch-invisible-edits 'show-and-error
- org-special-ctrl-a/e t
- org-insert-heading-respect-content t
-
- ;; Org styling, hide markup etc.
- org-hide-emphasis-markers t
- org-pretty-entities t
- org-agenda-tags-column 0
- org-ellipsis "…")
-
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
-
-(setq-default org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
-
 (add-to-list 'load-path "~/.emacs.d/InitFiles/")
 
 (load "compilation")
@@ -166,6 +143,7 @@
 (load "packages")
 (load "python")
 (load "Ollama")
+(load "org-mode")
 
 ;; ansi color??
 (when (require 'ansi-color nil t)
@@ -176,9 +154,6 @@
 (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
 
 (setq directory-abbrev-alist '(("^/mnt/host/" . "./")))
-
-(defalias 'SourceClean (read-kbd-macro
-                        "<C-home> C-SPC <C-end> M-x untabify TAB RET <C-home> M-x repl TAB rege TAB RET 2*SPC * RET SPC RET <C-home> C-SPC <C-end> M-x inden TAB - reg TAB RET"))
 
 ;; pulled from comp.emacs discussion
 ;; http://groups.google.com/group/comp.emacs/browse_thread/thread/6fcb3d62d7a501af/c6590cf7ab1f1876?show_docid=c6590cf7ab1f1876#
