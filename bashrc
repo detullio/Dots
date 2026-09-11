@@ -1,4 +1,4 @@
-#s ~/.bashrc: executed by bash(1) for non-login shells.
+# ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -76,10 +76,14 @@ parse_git_branch() {
 # *)
 #     ;;
 # esac
-GRAY="\[$(tput setaf 242)\]"
-RESET="\[$(tput sgr0)\]"
-PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h:\w\a\]\n${GRAY} \u@\h:\$(/usr/bin/tty | /bin/sed -e 's:dev/::') \w\n\$(parse_git_branch)\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")> > >\[\033[0m\]"
-#PS1="\n ${GRAY}\u@\h:\$(/usr/bin/tty | /bin/sed -e 's:dev/::') \w\n${RESET}$(parse_git_branch)\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")> > >\[\033[0m\]"
+if [ "$TERM" = "dumb" ]; then
+    PS1='$ '
+else
+    GRAY="\[$(tput setaf 242)\]"
+    RESET="\[$(tput sgr0)\]"
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h:\w\a\]\n${GRAY} \u@\h:\$(/usr/bin/tty | /bin/sed -e 's:dev/::') \w\n\$(parse_git_branch)\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")> > >\[\033[0m\]"
+    #PS1="\n ${GRAY}\u@\h:\$(/usr/bin/tty | /bin/sed -e 's:dev/::') \w\n${RESET}$(parse_git_branch)\n\[\033[2;37m\]\$(/bin/date +"%Y%m%d::%H:%M:%S")> > >\[\033[0m\]"
+fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -171,7 +175,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-source /home/kmdetullio/working/developing/ardupilot/ardupilot/Tools/completion/completion.bash
+source /home/kmdetullio/working/depending/ardupilot/ardupilot/Tools/completion/completion.bash
 
 # =============================================================================
 # Advanced History Management: Deduplicate, merge, and synchronize history
