@@ -30,6 +30,11 @@ if ! mountpoint -q ~/webdav 2>/dev/null; then
     nohup sshfs kmdetullio@192.168.42.239:/media/DataHuge/ ~/Lorelei-DataHuge >/dev/null 2>&1 &
 fi
 
+# Org-mode directory environment variables (consumed by Emacs init files).
+# Exported here, after sshfs mounts, so that remote paths exist when Emacs starts.
+export ORG_DIR="$HOME/Lorelei-DataHuge/OrgFiles"
+export ORG_MOBILE_DIR="$HOME/Lorelei-DataHuge/webdav/Org"
+
 source /home/kmdetullio/venv-ardupilot/bin/activate
 
 export PATH=/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:$PATH

@@ -4,7 +4,7 @@ Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
 
 [Service]
 Type=notify
-WorkingDirectory=%h/working/documenting/OrgFiles
+WorkingDirectory=%h/Lorelei-DataHuge/OrgFiles
 ExecStart=/usr/local/bin/emacs --fg-daemon=OrgHell
 ExecStop=/usr/local/bin/emacsclient --socket-name=OrgHell --eval "(kill-emacs)"
 Restart=on-failure

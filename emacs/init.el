@@ -239,6 +239,7 @@ This function is suitable to add to `find-file-hook'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files nil)
  '(package-selected-packages
    '(all-the-icons-ibuffer apache-mode bar-cursor bm boxquote
                            browse-kill-ring chatgpt-shell cmake-mode
@@ -261,4 +262,7 @@ This function is suitable to add to `find-file-hook'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(markdown-inline-code-face ((t (:inherit (markdown-code-face ##)))))
+ '(speedbar-directory-face ((t (:foreground "white" :weight bold))))
+ '(speedbar-file-face ((t (:foreground "white"))))
+ '(speedbar-selected-face ((t (:foreground "white" :underline t)))))

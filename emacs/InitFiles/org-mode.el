@@ -1,25 +1,34 @@
 ;; -*- lexical-binding: t; -*-
 
-(setq diary-file "~/working/documenting/OrgFiles/Journal/diary")
+;; Resolve org-mode directory paths from environment variables exported in
+;; ~/.profile after sshfs mounts.
+;;
+;;   ORG_DIR        ~/Lorelei-DataHuge/OrgFiles   – main org files root
+;;   ORG_MOBILE_DIR ~/Lorelei-DataHuge/webdav/Org – MobileOrg sync directory
+
+(setq diary-file
+      (expand-file-name "Journal/diary" (getenv "ORG_DIR")))
+
 (setq org-agenda-include-diary t)
 (setq-default org-todo-keywords `((sequence "TODO" "ACTIVE" "BLOCKED" "DONE")))
 
-(setq org-mobile-directory "~/Lorelei-DataHuge/webdav/Org/")
+(setq org-mobile-directory
+      (file-name-as-directory (getenv "ORG_MOBILE_DIR")))
 
 ;; Where captures from the mobile app get written
-(setq org-mobile-inbox-for-pull "~/working/documenting/OrgFiles/from-mobile.org")
+(setq org-mobile-inbox-for-pull
+      (expand-file-name "from-mobile.org" (getenv "ORG_MOBILE_DIR")))
 
-(setq org-directory "~/Lorelei-DataHuge/webdav/OrgFiles/")
+(setq org-directory
+      (file-name-as-directory (getenv "ORG_DIR")))
 
 (add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
 (add-hook 'org-agenda-mode-hook (lambda () (setq-local truncate-lines nil)))
 (add-hook 'diary-mode-hook (lambda () (setq-local truncate-lines nil)))
 
 (defun my-org-agenda-files ()
-  "Return a list of all .org files under `~/working/documenting/OrgFiles/'."
-  (directory-files-recursively
-   (expand-file-name "~/working/documenting/OrgFiles/")
-   "\\.org\\'"))
+  "Return a list of all .org files under ORG_DIR."
+  (directory-files-recursively (expand-file-name (getenv "ORG_DIR")) "\\.org\\'"))
 
 (setq-default org-agenda-files (my-org-agenda-files))
 
